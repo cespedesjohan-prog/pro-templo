@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+/* =====================================
+   REPORTES - IMPRESIÓN PROFESIONAL
+===================================== */
+
+.print-only {
+  display: none;
+}
+
+@media print {
+
+  /* ---------------------------------
+     CONFIGURACIÓN GENERAL
+  --------------------------------- */
+
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11px;
+  }
+
+  /* ---------------------------------
+     OCULTAR ELEMENTOS DE LA APP
+  --------------------------------- */
+
+  aside,
+  nav,
+  header {
+    display: none !important;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    display: none !important;
+  }
+
+  /* ---------------------------------
+     CONTENIDO
+  --------------------------------- */
+
+  .reportes-contenido {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .reporte-encabezado {
+    display: block !important;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #111827;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .reporte-info {
+    display: flex !important;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+    padding: 8px 0;
+    border-bottom: 1px solid #d1d5db;
+    font-size: 10px;
+    color: #4b5563;
+  }
+
+  /* ---------------------------------
+     OCULTAR SOMBRAS
+  --------------------------------- */
+
+  .shadow,
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg {
+    box-shadow: none !important;
+  }
+
+  /* ---------------------------------
+     TARJETAS
+  --------------------------------- */
+
+  .bg-white {
+    background: #ffffff !important;
+  }
+
+  .rounded-2xl {
+    border-radius: 0 !important;
+  }
+
+  /* ---------------------------------
+     TABLAS
+  --------------------------------- */
+
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+    font-weight: 700 !important;
+    border: 1px solid #d1d5db !important;
+    padding: 7px !important;
+  }
+
+  td {
+    border: 1px solid #d1d5db !important;
+    padding: 7px !important;
+  }
+
+  /* ---------------------------------
+     SECCIONES
+  --------------------------------- */
+
+  h2 {
+    page-break-after: avoid;
+    margin-top: 16px !important;
+    margin-bottom: 8px !important;
+    font-size: 15px !important;
+  }
+
+  /* ---------------------------------
+     TARJETAS DEL RESUMEN
+  --------------------------------- */
+
+  .grid {
+    page-break-inside: avoid;
+  }
+
+  /* ---------------------------------
+     EVITAR CORTES FEOS
+  --------------------------------- */
+
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
+
+  /* ---------------------------------
+     COLORES DE TEXTO
+  --------------------------------- */
+
+  .text-green-600 {
+    color: #15803d !important;
+  }
+
+  .text-blue-600 {
+    color: #1d4ed8 !important;
+  }
+
+  .text-red-600 {
+    color: #dc2626 !important;
+  }
+
+  .text-purple-600 {
+    color: #7e22ce !important;
+  }
+
+  /* ---------------------------------
+     PIE DE REPORTE
+  --------------------------------- */
+
+  .reporte-footer {
+    display: block !important;
+    margin-top: 20px;
+    padding-top: 8px;
+    border-top: 1px solid #d1d5db;
+    text-align: center;
+    font-size: 9px;
+    color: #6b7280;
+  }
+  /* ==================================
+     PDF EXCLUSIVO PARA MIEMBROS
+     ================================== */
+
+  .reporte-miembro {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .reporte-miembro h1 {
+    font-size: 22px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .reporte-miembro .total-aportes {
+    margin-top: 12px !important;
+    padding: 10px !important;
+    border: 1px solid #d1d5db !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+  }
+}
