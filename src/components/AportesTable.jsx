@@ -468,15 +468,14 @@ async function verComprobante(ruta) {
 
                       {/* Eliminar */}
 
-                     <button
+  <button
   type="button"
-  onClick={() => eliminar(aporte.id)}
+  onClick={() => abrirEliminarAporte(aporte.id)}
   className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
   title="Eliminar aporte"
 >
   🗑️
 </button>
-
                     </div>
 
                   </td>
