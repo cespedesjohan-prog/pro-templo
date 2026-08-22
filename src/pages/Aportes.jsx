@@ -691,7 +691,7 @@ async function confirmarEliminar() {
 
   try {
 
-    await eliminarAporteService(idEliminar);
+   await eliminarAporte(idEliminar);
 
     toast.success("Aporte eliminado");
 
@@ -1019,28 +1019,17 @@ return (
     ===================================== */}
 
     <AportesTable
+  aportes={aportesFiltrados}
+  cargando={cargando}
+  editar={editarAporte}
+  eliminar={eliminarAporte}
+  abrirEliminar={abrirEliminarAporte}
+  puedeAdministrar={puedeAdministrar}
+  aprobar={aprobarAporteRegistro}
+  rechazar={rechazarAporteRegistro}
+/>
 
-      aportes={aportesFiltrados}
-
-      cargando={cargando}
-
-      editar={editarAporte}
-
-      eliminar={eliminarAporte}
-
-      puedeAdministrar={
-        puedeAdministrar
-      }
-
-      aprobar={
-        aprobarAporteRegistro
-      }
-
-      rechazar={
-        rechazarAporteRegistro
-      }
-
-    />
+    
 
 
     {/* =====================================

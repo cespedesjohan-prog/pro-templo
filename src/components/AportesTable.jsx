@@ -5,6 +5,7 @@ function AportesTable({
   cargando,
   editar,
   eliminar,
+  abrirEliminar,
   aprobar,
   rechazar,
   puedeAdministrar,
@@ -467,10 +468,9 @@ async function verComprobante(ruta) {
 
 
                       {/* Eliminar */}
-
-  <button
+<button
   type="button"
-  onClick={() => abrirEliminarAporte(aporte.id)}
+ onClick={() => abrirEliminar(aporte.id)}
   className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
   title="Eliminar aporte"
 >
