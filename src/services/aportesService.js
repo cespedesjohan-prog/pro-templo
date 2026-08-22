@@ -233,34 +233,23 @@ export async function actualizarAporte(
 export async function eliminarAporte(id) {
 
   if (!id) {
-
     throw new Error(
       "No se recibió el ID del aporte."
     );
-
   }
 
-
-  const {
-    error,
-  } = await supabase
-
+  const { error } = await supabase
     .from("aportes")
-
     .delete()
-
     .eq("id", id);
 
-
   if (error) {
+    console.error("Error al eliminar aporte:", error);
     throw error;
   }
 
-
   return true;
-
 }
-
 
 
 // ======================================
@@ -375,48 +364,40 @@ export async function actualizarComprobanteAporte(
 // APROBAR APORTE
 // ======================================
 
+
+
 export async function aprobarAporte(id) {
 
   if (!id) {
-
     throw new Error(
       "No se recibió el ID del aporte."
     );
-
   }
 
-
-  const {
-    data,
-    error,
-  } = await supabase
-
+  const { data, error } = await supabase
     .from("aportes")
-
     .update({
-
       estado: "Registrado",
-
     })
-
     .eq("id", id)
-
-    .select()
-
-    .single();
-
+    .select("id, estado")
+    .maybeSingle();
 
   if (error) {
+    console.error("Error Supabase aprobando:", error);
     throw error;
   }
 
+  console.log("RESULTADO APROBAR:", data);
+
+  if (!data) {
+    throw new Error(
+      "Supabase no modificó el aporte. Probablemente la política RLS no permite actualizar aportes con este usuario."
+    );
+  }
 
   return data;
-
 }
-
-
-
 // ======================================
 // RECHAZAR APORTE
 // ======================================
@@ -424,39 +405,26 @@ export async function aprobarAporte(id) {
 export async function rechazarAporte(id) {
 
   if (!id) {
-
     throw new Error(
       "No se recibió el ID del aporte."
     );
-
   }
-
 
   const {
     data,
     error,
   } = await supabase
-
     .from("aportes")
-
     .update({
-
       estado: "Anulado",
-
     })
-
     .eq("id", id)
-
     .select()
-
     .single();
-
 
   if (error) {
     throw error;
   }
 
-
   return data;
-
 }

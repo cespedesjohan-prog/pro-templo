@@ -499,7 +499,7 @@ function Miembros() {
           ENCABEZADO
       ============================ */}
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
         <div>
 
@@ -518,7 +518,7 @@ function Miembros() {
 
           <button
             onClick={nuevoMiembro}
-            className="rounded-xl bg-blue-600 px-6 py-3 text-white shadow hover:bg-blue-700"
+            className="w-full md:w-auto rounded-xl bg-blue-600 px-6 py-3 text-white shadow hover:bg-blue-700"
           >
             + Nuevo miembro
           </button>

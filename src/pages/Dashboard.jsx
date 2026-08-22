@@ -2,82 +2,79 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import StatCard from "../components/ui/StatCard";
-import ProgressCard from "../components/ui/ProgressCard";
 import UltimosAportes from "../components/dashboard/UltimosAportes";
 import ProyectoCard from "../components/dashboard/ProyectoCard";
 import GraficoMetodoPago from "../components/dashboard/GraficoMetodoPago";
 import GraficoAportesMes from "../components/dashboard/GraficoAportesMes";
 import QuickActions from "../components/dashboard/QuickActions";
 import Notificaciones from "../components/dashboard/Notificaciones";
+
 import { obtenerDashboard } from "../services/dashboardService";
 import { useAuth } from "../context/AuthContext";
+
 function Dashboard() {
-const location = useLocation();
-const [dashboard, setDashboard] = useState({
+  const location = useLocation();
 
-  totalMiembros: 0,
+  const [dashboard, setDashboard] = useState({
+    totalMiembros: 0,
+    totalRecaudado: 0,
+    totalAportes: 0,
+    ultimoAporte: null,
+    proyecto: null,
+    avance: 0,
+    ultimosAportes: [],
+    graficoMes: [],
+    graficoMetodo: [],
+    saldoPrestamos: 0,
+  });
 
-  totalProyectos: 0,
+  const { usuario, perfil } = useAuth();
 
-  totalRecaudado: 0,
+  console.log("USUARIO:", usuario);
+  console.log("PERFIL:", perfil);
+  console.log("ROL:", perfil?.rol);
 
-});
-
-const {
-  usuario,
-  perfil,
-} = useAuth();
-
-console.log("USUARIO:", usuario);
-console.log("PERFIL:", perfil);
-console.log("ROL:", perfil?.rol);
-
-async function cargarDashboard() {
-
-  try {
-
-    const data = await obtenerDashboard();
-
-    setDashboard(data);
-
-  } catch (error) {
-
-    console.error(error);
-
+  async function cargarDashboard() {
+    try {
+      const data = await obtenerDashboard();
+      setDashboard(data);
+    } catch (error) {
+      console.error("Error cargando dashboard:", error);
+    }
   }
 
-}
-useEffect(() => {
+  useEffect(() => {
+    cargarDashboard();
+  }, [location]);
 
-  cargarDashboard();
-
-}, [location]);
   return (
+    <div className="w-full min-w-0 space-y-6 px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
 
-    <div className="space-y-8">
-
-      {/* Encabezado */}
+      {/* =========================================
+          ENCABEZADO
+      ========================================= */}
 
       <div>
-
-        <h1 className="text-4xl font-bold text-gray-800">
-
+        <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl lg:text-4xl">
           Dashboard
-
         </h1>
 
-        <p className="text-gray-500 mt-2">
-
+        <p className="mt-1 text-sm text-gray-500 sm:mt-2 sm:text-base">
           Bienvenido al sistema PRO TEMPLO ERP
-
         </p>
-
       </div>
-    <QuickActions />
 
-      {/* Tarjetas */}
+      {/* =========================================
+          ACCIONES RÁPIDAS
+      ========================================= */}
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <QuickActions />
+
+      {/* =========================================
+          TARJETAS PRINCIPALES
+      ========================================= */}
+
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
 
         <StatCard
           title="Miembros"
@@ -89,76 +86,85 @@ useEffect(() => {
 
         <StatCard
           title="Recaudado"
-          value={`$${dashboard.totalRecaudado.toLocaleString("es-CO")}`}
+          value={`$${Number(
+            dashboard.totalRecaudado || 0
+          ).toLocaleString("es-CO")}`}
           icon="💰"
           color="green"
-          subtitle="Este mes"
+          subtitle="Aportes registrados"
         />
 
-       <StatCard
-  title="Proyecto"
-  value={dashboard.proyecto?.nombre || "Sin proyecto"}
-  icon={dashboard.proyecto?.icono || "🏗️"}
-  color="yellow"
-  subtitle="Proyecto activo"
-/>
+        <StatCard
+          title="Proyecto"
+          value={dashboard.proyecto?.nombre || "Sin proyecto"}
+          icon={dashboard.proyecto?.icono || "🏗️"}
+          color="yellow"
+          subtitle="Proyecto activo"
+        />
 
         <StatCard
-  title="Saldo préstamo"
-  value={`$${Number(
-    dashboard.saldoPrestamos || 0
-  ).toLocaleString("es-CO")}`}
-  icon="📉"
-  color="red"
-  subtitle="Pendiente"
-/>
+          title="Saldo préstamo"
+          value={`$${Number(
+            dashboard.saldoPrestamos || 0
+          ).toLocaleString("es-CO")}`}
+          icon="📉"
+          color="red"
+          subtitle="Pendiente"
+        />
 
       </div>
 
-      {/* Avance */}
+      {/* =========================================
+          PROYECTO + ÚLTIMOS APORTES
+      ========================================= */}
 
- 
-{/* Panel principal */}
+      <div className="grid min-w-0 grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
 
-{/* Proyecto + Últimos aportes */}
+        <div className="min-w-0">
+          <ProyectoCard
+            proyecto={dashboard.proyecto}
+            totalRecaudado={dashboard.totalRecaudado}
+          />
+        </div>
 
-<div className="grid gap-6 lg:grid-cols-2">
+        <div className="min-w-0">
+          <UltimosAportes
+            aportes={dashboard.ultimosAportes || []}
+          />
+        </div>
 
-  <ProyectoCard
-    proyecto={dashboard.proyecto}
-    totalRecaudado={dashboard.totalRecaudado}
-  />
+      </div>
 
-  <UltimosAportes
-    aportes={dashboard.ultimosAportes || []}
-  />
+      {/* =========================================
+          GRÁFICOS
+      ========================================= */}
 
-</div>
+      <div className="grid min-w-0 grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
 
-{/* Gráficos */}
+        <div className="min-w-0 overflow-hidden">
+          <GraficoAportesMes
+            data={dashboard.graficoMes || []}
+          />
+        </div>
 
-<div className="grid gap-6 lg:grid-cols-2">
+        <div className="min-w-0 overflow-hidden">
+          <GraficoMetodoPago
+            data={dashboard.graficoMetodo || []}
+          />
+        </div>
 
-  <GraficoAportesMes
-    data={dashboard.graficoMes || []}
-  />
+      </div>
 
-  <GraficoMetodoPago
-    data={dashboard.graficoMetodo || []}
-  />
+      {/* =========================================
+          NOTIFICACIONES
+      ========================================= */}
 
-</div>
-
-{/* Gráfico */}
-
-<GraficoAportesMes
-  data={dashboard.graficoMes || []}
-/>
+      <div className="min-w-0">
+        <Notificaciones dashboard={dashboard} />
+      </div>
 
     </div>
-
   );
-<Notificaciones dashboard={dashboard} />
 }
 
 export default Dashboard;

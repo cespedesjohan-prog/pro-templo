@@ -5,11 +5,10 @@ function AportesTable({
   cargando,
   editar,
   eliminar,
-  puedeAdministrar,
   aprobar,
   rechazar,
+  puedeAdministrar,
 }) {
-
   // =====================================
   // Cargando
   // =====================================
@@ -401,33 +400,29 @@ async function verComprobante(ruta) {
   )}
 
 </td>
+{/* Aprobar / Rechazar */}
+
 {puedeAdministrar &&
   aporte.estado === "Pendiente" && (
+    <>
+      <button
+        type="button"
+        onClick={() => aprobar(aporte.id)}
+        className="rounded-lg bg-green-600 px-3 py-2 text-white hover:bg-green-700"
+        title="Aprobar aporte"
+      >
+        ✅
+      </button>
 
-  <>
-    <button
-      type="button"
-      onClick={() =>
-        aprobar(aporte.id)
-      }
-      className="rounded-lg bg-green-600 px-3 py-2 text-white hover:bg-green-700"
-      title="Aprobar aporte"
-    >
-      ✅
-    </button>
-
-    <button
-      type="button"
-      onClick={() =>
-        rechazar(aporte.id)
-      }
-      className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
-      title="Rechazar aporte"
-    >
-      ❌
-    </button>
-  </>
-
+      <button
+        type="button"
+        onClick={() => rechazar(aporte.id)}
+        className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
+        title="Rechazar aporte"
+      >
+        ❌
+      </button>
+    </>
 )}
                   {/* Observación */}
 
@@ -473,18 +468,14 @@ async function verComprobante(ruta) {
 
                       {/* Eliminar */}
 
-                      <button
-                        type="button"
-                        onClick={() =>
-                          eliminar(aporte.id)
-                        }
-                        className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
-                        title="Eliminar aporte"
-                      >
-
-                        🗑️
-
-                      </button>
+                     <button
+  type="button"
+  onClick={() => eliminar(aporte.id)}
+  className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
+  title="Eliminar aporte"
+>
+  🗑️
+</button>
 
                     </div>
 

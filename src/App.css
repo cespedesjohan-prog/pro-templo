@@ -182,3 +182,643 @@
     border-right-color: var(--border);
   }
 }
+/* =========================================
+   PRO TEMPLO - RESPONSIVE GLOBAL
+   ========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Evita que textos largos rompan tarjetas */
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+span,
+td,
+th {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Evita desbordamientos dentro de flex y grid */
+.grid,
+.flex {
+  min-width: 0;
+}
+
+.grid > *,
+.flex > * {
+  min-width: 0;
+}
+
+/* =========================================
+   TAMAÑOS FLUIDOS
+   ========================================= */
+
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+  line-height: 1.2;
+}
+
+/* =========================================
+   NÚMEROS Y MONEDAS
+   ========================================= */
+
+.text-3xl {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.15;
+}
+
+.text-2xl {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  line-height: 1.2;
+}
+
+/*
+   Evita que cantidades como
+   $100.000.000
+   se monten sobre otra columna
+*/
+.text-right,
+.text-green-600,
+.text-red-600,
+.responsive-number {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================
+   TARJETAS
+   ========================================= */
+
+.rounded-2xl {
+  max-width: 100%;
+}
+
+.shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================
+   TABLAS
+   ========================================= */
+
+/*
+   Las tablas grandes pueden desplazarse
+   horizontalmente sin romper la página.
+*/
+.overflow-x-auto {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  max-width: 100%;
+}
+
+/* =========================================
+   FORMULARIOS
+   ========================================= */
+
+input,
+select,
+textarea {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   BOTONES
+   ========================================= */
+
+button {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   TABLET / MÓVIL
+   ========================================= */
+
+@media (max-width: 768px) {
+
+  /* -----------------------------------------
+     TÍTULOS
+     ----------------------------------------- */
+
+  h1 {
+    font-size: clamp(1.8rem, 7vw, 2.4rem) !important;
+  }
+
+  h2 {
+    font-size: clamp(1.4rem, 6vw, 2rem) !important;
+  }
+
+  h3 {
+    font-size: clamp(1.15rem, 5vw, 1.5rem) !important;
+  }
+
+  p {
+    font-size: clamp(0.9rem, 3.8vw, 1rem);
+  }
+
+  /* -----------------------------------------
+     TARJETAS
+     ----------------------------------------- */
+
+  .rounded-2xl {
+    border-radius: 1rem !important;
+  }
+
+  .p-8 {
+    padding: 1.25rem !important;
+  }
+
+  .p-6 {
+    padding: 1rem !important;
+  }
+
+  .p-5 {
+    padding: 1rem !important;
+  }
+
+  /* -----------------------------------------
+     NÚMEROS
+     ----------------------------------------- */
+
+  .text-3xl {
+    font-size: clamp(1.5rem, 6vw, 2rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  .text-2xl {
+    font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  /* -----------------------------------------
+     GRIDS
+     ----------------------------------------- */
+
+  .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* -----------------------------------------
+     FLEX
+     ----------------------------------------- */
+
+  .flex {
+    min-width: 0;
+  }
+
+  .flex > * {
+    min-width: 0;
+  }
+
+  /* -----------------------------------------
+     BOTONES
+     ----------------------------------------- */
+
+  button {
+    max-width: 100%;
+  }
+
+  /* -----------------------------------------
+     INPUTS
+     ----------------------------------------- */
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   TELÉFONOS PEQUEÑOS
+   ========================================= */
+
+@media (max-width: 480px) {
+
+  .p-8 {
+    padding: 1rem !important;
+  }
+
+  .p-6 {
+    padding: 0.9rem !important;
+  }
+
+  .p-5 {
+    padding: 0.9rem !important;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+
+  .text-2xl {
+    font-size: 1.3rem !important;
+  }
+
+  .text-xl {
+    font-size: 1.1rem !important;
+  }
+
+}
+/* =====================================================
+   PRO TEMPLO - RESPONSIVE GLOBAL MEJORADO
+   PC + TABLET + MOVIL
+   ===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Evita que cualquier elemento fuerce el ancho */
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  max-width: 100%;
+}
+
+/* Textos largos nunca deben romper una tarjeta */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div,
+td,
+th {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* =====================================================
+   CONTENEDORES
+   ===================================================== */
+
+@media (max-width: 1024px) {
+
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl {
+    max-width: 100% !important;
+  }
+
+  main {
+    width: 100%;
+    max-width: 100%;
+  }
+
+}
+
+/* =====================================================
+   TARJETAS
+   ===================================================== */
+
+.card,
+.rounded-2xl,
+.rounded-xl {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+
+  .rounded-2xl {
+    border-radius: 16px !important;
+  }
+
+  .rounded-xl {
+    border-radius: 14px !important;
+  }
+
+  .shadow {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .p-8 {
+    padding: 20px !important;
+  }
+
+  .p-6 {
+    padding: 16px !important;
+  }
+
+  .p-5 {
+    padding: 16px !important;
+  }
+
+}
+
+/* =====================================================
+   TIPOGRAFÍA RESPONSIVA
+   ===================================================== */
+
+h1 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+}
+
+/* Números de dinero */
+.text-3xl {
+  font-size: clamp(1.5rem, 4vw, 2rem) !important;
+  line-height: 1.15 !important;
+}
+
+.text-2xl {
+  font-size: clamp(1.25rem, 3vw, 1.75rem) !important;
+  line-height: 1.2 !important;
+}
+
+/* =====================================================
+   GRID RESPONSIVO
+   ===================================================== */
+
+.grid {
+  width: 100%;
+  min-width: 0;
+}
+
+.grid > * {
+  min-width: 0;
+}
+
+/* 3 columnas */
+@media (max-width: 768px) {
+
+  .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+}
+
+/* Teléfono pequeño */
+@media (max-width: 480px) {
+
+  .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+}
+
+/* =====================================================
+   FLEX
+   ===================================================== */
+
+.flex {
+  min-width: 0;
+}
+
+.flex > * {
+  min-width: 0;
+}
+
+/* =====================================================
+   BOTONES
+   ===================================================== */
+
+button {
+  max-width: 100%;
+  min-height: 44px;
+}
+
+@media (max-width: 768px) {
+
+  button {
+    font-size: 1rem;
+  }
+
+}
+
+/* =====================================================
+   INPUTS Y FORMULARIOS
+   ===================================================== */
+
+input,
+select,
+textarea {
+  max-width: 100%;
+  width: 100%;
+  min-height: 48px;
+  font-size: 16px;
+}
+
+/*
+   Evita que Android haga zoom automáticamente
+   cuando se toca un input.
+*/
+
+@media (max-width: 768px) {
+
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+}
+
+/* =====================================================
+   FORMULARIOS EN MOVIL
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+  form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  form .grid-cols-2,
+  form .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+}
+
+/* =====================================================
+   TABLAS
+   ===================================================== */
+
+/*
+   En PC seguimos usando tabla.
+   En móvil permitimos desplazamiento horizontal
+   sin romper toda la página.
+*/
+
+.overflow-x-auto {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  min-width: 700px;
+}
+
+@media (max-width: 768px) {
+
+  table {
+    min-width: 650px;
+  }
+
+}
+
+/* =====================================================
+   TARJETAS DE INFORMACIÓN
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+  .bg-white {
+    max-width: 100%;
+  }
+
+}
+
+/* =====================================================
+   NÚMEROS / MONEDAS
+   ===================================================== */
+
+/*
+   Evita que Meta / Recaudado / Falta
+   se monten unos encima de otros.
+*/
+
+.currency,
+.money,
+.amount {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   PC
+   ===================================================== */
+
+@media (min-width: 769px) {
+
+  .responsive-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+}
+
+/* =====================================================
+   MOVIL
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+  .responsive-container {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+}
+
+/* =====================================================
+   TELEFONOS PEQUEÑOS
+   ===================================================== */
+
+@media (max-width: 480px) {
+
+  .responsive-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .p-8 {
+    padding: 16px !important;
+  }
+
+  .p-6 {
+    padding: 14px !important;
+  }
+
+  .p-5 {
+    padding: 14px !important;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+
+  .text-2xl {
+    font-size: 1.3rem !important;
+  }
+
+  .text-xl {
+    font-size: 1.1rem !important;
+  }
+
+}

@@ -45,20 +45,160 @@ function MembersTable({
   }
 
 
-  // =====================================
-  // Tabla
-  // =====================================
-
   return (
     <div className="bg-white rounded-2xl shadow overflow-hidden">
 
-      <div className="overflow-x-auto">
+      {/* =================================================
+          VISTA MÓVIL
+          ================================================= */}
+
+      <div className="md:hidden p-4 space-y-4">
+
+        {miembros.map((miembro) => (
+
+          <div
+            key={miembro.id}
+            className="rounded-xl border border-gray-200 p-4 shadow-sm"
+          >
+
+            {/* Nombre */}
+
+            <div className="flex items-center gap-3 mb-4">
+
+              <div className="w-12 h-12 shrink-0 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
+                {miembro.nombres
+                  ?.charAt(0)
+                  ?.toUpperCase() || "?"}
+              </div>
+
+              <div className="min-w-0">
+
+                <div className="font-semibold text-lg text-gray-800 break-words">
+                  {miembro.nombres || "—"}
+                </div>
+
+                <div className="text-sm text-gray-500">
+                  {miembro.telefono_movil || "—"}
+                </div>
+
+              </div>
+
+            </div>
+
+
+            {/* Información */}
+
+            <div className="space-y-3 text-sm">
+
+              <div>
+
+                <p className="text-gray-500">
+                  Teléfono
+                </p>
+
+                <p className="font-medium text-gray-800">
+                  {miembro.telefono_movil || "—"}
+                </p>
+
+              </div>
+
+
+              <div className="min-w-0">
+
+                <p className="text-gray-500">
+                  Correo
+                </p>
+
+                <p className="font-medium text-gray-800 break-all">
+                  {miembro.correo_electronico || "—"}
+                </p>
+
+              </div>
+
+
+              <div>
+
+                <p className="text-gray-500">
+                  Compromiso mensual
+                </p>
+
+                <p className="font-semibold text-gray-800">
+                  {formatoMoneda(
+                    miembro.compromiso_mensual
+                  )}
+                </p>
+
+              </div>
+
+
+              <div>
+
+                <p className="text-gray-500">
+                  Estado
+                </p>
+
+                <span
+                  className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold ${
+                    miembro.estado
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {miembro.estado
+                    ? "Activo"
+                    : "Inactivo"}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            {/* Acciones */}
+
+            {puedeAdministrar && (
+
+              <div className="flex gap-3 mt-5 pt-4 border-t border-gray-200">
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    editar(miembro)
+                  }
+                  className="flex-1 rounded-lg bg-yellow-400 px-4 py-3 hover:bg-yellow-500"
+                >
+                  ✏️ Editar
+                </button>
+
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    eliminar(miembro.id)
+                  }
+                  className="flex-1 rounded-lg bg-red-600 px-4 py-3 text-white hover:bg-red-700"
+                >
+                  🗑️ Eliminar
+                </button>
+
+              </div>
+
+            )}
+
+          </div>
+
+        ))}
+
+      </div>
+
+
+      {/* =================================================
+          VISTA PC
+          ================================================= */}
+
+      <div className="hidden md:block overflow-x-auto">
 
         <table className="w-full">
-
-          {/* ================================
-              ENCABEZADO
-          ================================= */}
 
           <thead className="bg-gray-100">
 
@@ -85,19 +225,17 @@ function MembersTable({
               </th>
 
               {puedeAdministrar && (
+
                 <th className="text-center p-4">
                   Acciones
                 </th>
+
               )}
 
             </tr>
 
           </thead>
 
-
-          {/* ================================
-              CUERPO
-          ================================= */}
 
           <tbody>
 
@@ -108,9 +246,7 @@ function MembersTable({
                 className="border-t hover:bg-gray-50"
               >
 
-                {/* =========================
-                    NOMBRE
-                ========================== */}
+                {/* Nombre */}
 
                 <td className="p-4">
 
@@ -141,27 +277,21 @@ function MembersTable({
                 </td>
 
 
-                {/* =========================
-                    TELÉFONO
-                ========================== */}
+                {/* Teléfono */}
 
                 <td className="p-4">
                   {miembro.telefono_movil || "—"}
                 </td>
 
 
-                {/* =========================
-                    CORREO
-                ========================== */}
+                {/* Correo */}
 
                 <td className="p-4">
                   {miembro.correo_electronico || "—"}
                 </td>
 
 
-                {/* =========================
-                    COMPROMISO
-                ========================== */}
+                {/* Compromiso */}
 
                 <td className="p-4 text-right font-semibold">
 
@@ -172,9 +302,7 @@ function MembersTable({
                 </td>
 
 
-                {/* =========================
-                    ESTADO
-                ========================== */}
+                {/* Estado */}
 
                 <td className="p-4 text-center">
 
@@ -195,17 +323,13 @@ function MembersTable({
                 </td>
 
 
-                {/* =========================
-                    ACCIONES
-                ========================== */}
+                {/* Acciones */}
 
                 {puedeAdministrar && (
 
                   <td className="p-4">
 
                     <div className="flex justify-center gap-2">
-
-                      {/* Editar */}
 
                       <button
                         type="button"
@@ -218,8 +342,6 @@ function MembersTable({
                         ✏️
                       </button>
 
-
-                      {/* Eliminar */}
 
                       <button
                         type="button"
@@ -249,6 +371,7 @@ function MembersTable({
       </div>
 
     </div>
+    
   );
 }
 

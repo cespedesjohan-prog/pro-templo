@@ -1,8 +1,11 @@
+
 import { NavLink, Outlet } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 function MainLayout() {
 
+  const [menuAbierto, setMenuAbierto] = useState(false);
   const {
     perfil,
     cerrarSesion,
@@ -10,17 +13,13 @@ function MainLayout() {
 
   const rol = perfil?.rol;
 
+ 
 
   // ======================================
   // MENÚ SEGÚN ROL
   // ======================================
 
   const menu = [
-
-    // ====================================
-    // DASHBOARD
-    // ====================================
-
     {
       nombre: "Dashboard",
       ruta: "/",
@@ -31,11 +30,6 @@ function MainLayout() {
         "Miembro",
       ],
     },
-
-
-    // ====================================
-    // MIEMBROS
-    // ====================================
 
     {
       nombre: "Miembros",
@@ -48,32 +42,18 @@ function MainLayout() {
       ],
     },
 
-
-    // ====================================
-    // APORTES ADMINISTRATIVOS
-    // ====================================
-
-   {
-  nombre:
-    rol === "Miembro"
-      ? "Mis aportes"
-      : "Aportes",
-
-  ruta: "/aportes",
-
-  icono: "💰",
-
-  roles: [
-    "Administrador",
-    "Tesorero",
-    "Miembro",
-  ],
-},
-
-
-    // ====================================
-    // PROYECTOS
-    // ====================================
+    {
+      nombre: rol === "Miembro"
+        ? "Mis aportes"
+        : "Aportes",
+      ruta: "/aportes",
+      icono: "💰",
+      roles: [
+        "Administrador",
+        "Tesorero",
+        "Miembro",
+      ],
+    },
 
     {
       nombre: "Proyectos",
@@ -86,11 +66,6 @@ function MainLayout() {
       ],
     },
 
-
-    // ====================================
-    // REPORTES
-    // ====================================
-
     {
       nombre: "Reportes",
       ruta: "/reportes",
@@ -102,11 +77,6 @@ function MainLayout() {
       ],
     },
 
-
-    // ====================================
-    // PAGOS PRÉSTAMO
-    // ====================================
-
     {
       nombre: "Pagos Préstamo",
       ruta: "/pagos-prestamo",
@@ -117,11 +87,6 @@ function MainLayout() {
       ],
     },
 
-
-    // ====================================
-    // PARÁMETROS
-    // ====================================
-
     {
       nombre: "Parámetros",
       ruta: "/parametros-financieros",
@@ -130,43 +95,112 @@ function MainLayout() {
         "Administrador",
       ],
     },
-
   ];
 
-
   // ======================================
-  // FILTRAR MENÚ SEGÚN ROL
+  // FILTRAR MENÚ
   // ======================================
 
   const menuVisible = menu.filter(
-    (item) =>
-      item.roles.includes(rol)
+    (item) => item.roles.includes(rol)
   );
 
+  // ======================================
+  // CERRAR MENÚ MÓVIL
+  // ======================================
+
+  const cerrarMenuMovil = () => {
+    setMenuAbierto(false);
+  };
 
   return (
+    <div className="min-h-screen bg-gray-100">
 
-    <div className="flex min-h-screen">
+      {/* ==================================
+          BARRA SUPERIOR - SOLO MÓVIL
+      ================================== */}
+
+      <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-slate-900 px-4 text-white shadow-md lg:hidden">
+
+        <button
+          type="button"
+          onClick={() => setMenuAbierto(true)}
+          className="rounded-lg p-2 text-2xl hover:bg-slate-800"
+          aria-label="Abrir menú"
+        >
+          ☰
+        </button>
+
+        <div className="text-lg font-bold">
+          ⛪ PRO TEMPLO
+        </div>
+
+        <div className="w-10" />
+
+      </header>
+
+
+      {/* ==================================
+          FONDO OSCURO - MÓVIL
+      ================================== */}
+
+      {menuAbierto && (
+        <button
+          type="button"
+          aria-label="Cerrar menú"
+          onClick={cerrarMenuMovil}
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+        />
+      )}
 
 
       {/* ==================================
           SIDEBAR
       ================================== */}
 
-      <aside className="w-64 bg-slate-900 text-white p-6 flex flex-col">
-
-
+     <aside
+  className={`
+    fixed inset-y-0 left-0 z-50
+    w-64 bg-slate-900 text-white p-6
+    flex flex-col
+    transform transition-transform duration-300
+    md:static md:translate-x-0
+    ${menuAbierto ? "translate-x-0" : "-translate-x-full"}
+  `}
+>
+<button
+  type="button"
+  onClick={() => setMenuAbierto(false)}
+  className="mb-4 self-end rounded-lg px-3 py-2 text-xl hover:bg-slate-800 md:hidden"
+>
+  ✕
+</button>
         {/* ==================================
             LOGO
         ================================== */}
 
         <div className="mb-8">
 
-          <h2 className="text-2xl font-bold">
-            ⛪ PRO TEMPLO
-          </h2>
+          <div className="flex items-center justify-between">
 
-          <p className="text-xs text-slate-400 mt-2">
+            <h2 className="text-2xl font-bold">
+              ⛪ PRO TEMPLO
+            </h2>
+
+            {/* CERRAR - SOLO MÓVIL */}
+
+            <button
+              type="button"
+              onClick={cerrarMenuMovil}
+              className="rounded-lg p-2 text-xl hover:bg-slate-800 lg:hidden"
+              aria-label="Cerrar menú"
+            >
+              ✕
+            </button>
+
+          </div>
+
+          <p className="mt-2 text-xs text-slate-400">
             Sistema de gestión financiera
           </p>
 
@@ -183,7 +217,7 @@ function MainLayout() {
             {perfil?.nombres || "Usuario"}
           </p>
 
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="mt-1 text-xs text-slate-400">
             {rol || "Sin rol"}
           </p>
 
@@ -198,18 +232,19 @@ function MainLayout() {
 
           {menuVisible.map((item) => (
 
-            <NavLink
-              key={item.ruta}
-              to={item.ruta}
-              end={item.ruta === "/"}
-              className={({ isActive }) =>
-                `block rounded-lg px-4 py-3 transition ${
-                  isActive
-                    ? "bg-blue-600"
-                    : "hover:bg-slate-800"
-                }`
-              }
-            >
+        <NavLink
+  key={item.ruta}
+  to={item.ruta}
+  end={item.ruta === "/"}
+  onClick={() => setMenuAbierto(false)}
+  className={({ isActive }) =>
+    `block rounded-lg px-4 py-3 transition ${
+      isActive
+        ? "bg-blue-600"
+        : "hover:bg-slate-800"
+    }`
+  }
+>
 
               {item.icono} {item.nombre}
 
@@ -234,30 +269,36 @@ function MainLayout() {
         <button
           type="button"
           onClick={cerrarSesion}
-          className="w-full rounded-lg px-4 py-3 text-left text-red-300 hover:bg-red-900/30 transition"
+          className="w-full rounded-lg px-4 py-3 text-left text-red-300 transition hover:bg-red-900/30"
         >
           🚪 Cerrar sesión
         </button>
-
 
       </aside>
 
 
       {/* ==================================
-          CONTENIDO
+          CONTENIDO PRINCIPAL
       ================================== */}
 
-      <main className="flex-1 bg-gray-100 p-8">
+      <main className="min-h-screen min-w-0 bg-gray-100 pt-16 lg:ml-64 lg:pt-0">
 
-        <Outlet />
+        <div className="w-full min-w-0 p-4 sm:p-6 lg:p-8">
+<button
+  type="button"
+  onClick={() => setMenuAbierto(true)}
+  className="mb-4 rounded-lg bg-slate-900 px-4 py-2 text-xl text-white md:hidden"
+>
+  ☰
+</button>
+          <Outlet />
+
+        </div>
 
       </main>
 
-
     </div>
-
   );
-
 }
 
 export default MainLayout;

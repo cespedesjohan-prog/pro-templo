@@ -669,43 +669,52 @@ async function guardarAporte(e) {
   setAbrirModal(true);
 
 }
+  
+
   // =====================================
-  // Eliminar
-  // =====================================
+// Eliminar
+// =====================================
 
-  function eliminarAporte(id) {
+function abrirEliminarAporte(id) {
 
-    setIdEliminar(id);
+  setIdEliminar(id);
+  setAbrirEliminar(true);
 
-    setAbrirEliminar(true);
+}
+
+async function confirmarEliminar() {
+
+  if (!idEliminar) {
+    toast.error("No se encontró el aporte.");
+    return;
+  }
+
+  try {
+
+    await eliminarAporteService(idEliminar);
+
+    toast.success("Aporte eliminado");
+
+    setAbrirEliminar(false);
+    setIdEliminar(null);
+
+    await cargarAportes();
+
+  } catch (error) {
+
+    console.error(
+      "Error eliminando aporte:",
+      error
+    );
+
+    toast.error(
+      error?.message ||
+      "No se pudo eliminar el aporte."
+    );
 
   }
 
-  async function confirmarEliminar() {
-
-    try {
-
-      await eliminarAporteService(
-        idEliminar
-      );
-
-      toast.success(
-        "Aporte eliminado"
-      );
-
-      setAbrirEliminar(false);
-
-      setIdEliminar(null);
-
-      await cargarAportes();
-
-    } catch (error) {
-
-      toast.error(error.message);
-
-    }
-
-  }
+}
 
   // =====================================
 // Buscar

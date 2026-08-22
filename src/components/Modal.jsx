@@ -4,39 +4,116 @@ function Modal({
   titulo,
   children,
 }) {
+
   if (!abierto) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
 
-      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl">
+    <div
+      className="
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/40
+        p-3
+        sm:p-4
+      "
+    >
 
-        {/* Header */}
+      <div
+        className="
+          flex
+          w-full
+          max-w-2xl
+          max-h-[95vh]
+          flex-col
+          overflow-hidden
+          rounded-2xl
+          bg-white
+          shadow-2xl
+        "
+      >
 
-        <div className="flex items-center justify-between border-b px-8 py-6">
+        {/* =========================
+            HEADER
+        ========================== */}
 
-          <h2 className="text-3xl font-bold">
+        <div
+          className="
+            flex
+            shrink-0
+            items-center
+            justify-between
+            gap-4
+            border-b
+            px-5
+            py-4
+            sm:px-8
+            sm:py-6
+          "
+        >
+
+          <h2
+            className="
+              min-w-0
+              text-xl
+              font-bold
+              sm:text-2xl
+              lg:text-3xl
+            "
+          >
             {titulo}
           </h2>
 
           <button
+            type="button"
             onClick={cerrar}
-            className="text-4xl leading-none hover:text-red-500"
+            className="
+              shrink-0
+              rounded-lg
+              px-2
+              text-3xl
+              leading-none
+              text-gray-500
+              hover:bg-gray-100
+              hover:text-red-500
+              sm:text-4xl
+            "
+            aria-label="Cerrar"
           >
             ×
           </button>
 
         </div>
 
-        {/* Body */}
 
-        <div className="p-8">
+        {/* =========================
+            BODY
+        ========================== */}
+
+        <div
+          className="
+            min-h-0
+            flex-1
+            overflow-y-auto
+            overflow-x-hidden
+            p-5
+            sm:p-6
+            lg:p-8
+          "
+        >
+
           {children}
+
         </div>
 
       </div>
 
     </div>
+
   );
 }
 
