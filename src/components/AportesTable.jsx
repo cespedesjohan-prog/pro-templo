@@ -101,31 +101,27 @@ async function verComprobante(ruta) {
   // Estado visual
   // =====================================
 
-  function estadoClase(estado) {
+ function estadoClase(estado) {
 
-    switch (estado) {
+  switch (estado) {
 
-      case "Pendiente":
-        return "bg-yellow-100 text-yellow-700";
+    case "Pendiente":
+      return "bg-yellow-100 text-yellow-700";
 
-      case "Aprobado":
-        return "bg-green-100 text-green-700";
+    case "Registrado":
+      return "bg-blue-100 text-blue-700";
 
-      case "Rechazado":
-        return "bg-red-100 text-red-700";
+    case "Anulado":
+      return "bg-gray-200 text-gray-700";
 
-      case "Anulado":
-        return "bg-gray-200 text-gray-700";
-
-      case "Registrado":
-        return "bg-blue-100 text-blue-700";
-
-      default:
-        return "bg-gray-100 text-gray-700";
-
-    }
+    default:
+      return "bg-gray-100 text-gray-700";
 
   }
+
+}
+
+
 
 
   // =====================================
@@ -134,30 +130,23 @@ async function verComprobante(ruta) {
 
   function estadoTexto(estado) {
 
-    switch (estado) {
+  switch (estado) {
 
-      case "Pendiente":
-        return "🟡 Pendiente";
+    case "Pendiente":
+      return "🟡 Pendiente";
 
-      case "Aprobado":
-        return "🟢 Aprobado";
+    case "Registrado":
+      return "🔵 Registrado";
 
-      case "Rechazado":
-        return "🔴 Rechazado";
+    case "Anulado":
+      return "⚪ Anulado";
 
-      case "Anulado":
-        return "⚪ Anulado";
-
-      case "Registrado":
-        return "🔵 Registrado";
-
-      default:
-        return estado || "—";
-
-    }
+    default:
+      return estado || "—";
 
   }
 
+}
 
   // =====================================
   // Tabla
@@ -169,7 +158,7 @@ async function verComprobante(ruta) {
 
       <div className="overflow-x-auto">
 
-        <table className="w-full min-w-[1400px]">
+        <table className="w-full min-w-[1100px] text-sm">
 
           {/* =================================
               ENCABEZADO
@@ -179,45 +168,44 @@ async function verComprobante(ruta) {
 
             <tr>
 
-              <th className="text-left p-4">
-                N.º
-              </th>
+              <th className="text-left px-3 py-2 whitespace-nowrap">
+  N.º
+</th>
 
-              <th className="text-left p-4">
-                Fecha
-              </th>
+              <th className="text-left px-3 py-2 whitespace-nowrap">
+  Fecha
+</th>
 
-              <th className="text-left p-4">
-                Proyecto
-              </th>
+              <th className="text-left px-3 py-2 whitespace-nowrap">
+  Proyecto
+</th>
 
-              <th className="text-left p-4">
-                Miembro
-              </th>
+              <th className="text-left px-3 py-2 whitespace-nowrap">
+  Miembro
+</th>
 
-              <th className="text-right p-4">
-                Valor
-              </th>
+              <th className="text-right px-3 py-2 whitespace-nowrap">
+  Valor
+</th>
 
-              <th className="text-left p-4">
-                Método
-              </th>
+              <th className="text-left px-3 py-2 whitespace-nowrap">
+  Método
+</th>
 
-              <th className="text-center p-4">
-                Estado
-              </th>
+              <th className="text-center px-3 py-2 whitespace-nowrap">
+  Estado
+</th>
 
-              <th className="text-center p-4">
-                Comprobante
-              </th>
+              <th className="text-center px-3 py-2 whitespace-nowrap">
+  Comprobante
+</th>
+              <th className="hidden md:table-cell text-left px-3 py-2 whitespace-nowrap">
+  Observación
+</th>
 
-              <th className="text-left p-4">
-                Observación
-              </th>
-
-              <th className="text-center p-4">
-                Acciones
-              </th>
+              <th className="text-center px-3 py-2 whitespace-nowrap">
+  Acciones
+</th>
 
             </tr>
 
@@ -240,7 +228,7 @@ async function verComprobante(ruta) {
 
                   {/* N.º */}
 
-                  <td className="p-4 font-medium">
+                  <td className="px-3 py-2 font-medium whitespace-nowrap">
 
                     {aportes.length - index}
 
@@ -249,7 +237,7 @@ async function verComprobante(ruta) {
 
                   {/* Fecha */}
 
-                  <td className="p-4 whitespace-nowrap">
+                  <td className="px-3 py-2 whitespace-nowrap">
 
                     {aporte.fecha
                       ? new Date(
@@ -264,9 +252,9 @@ async function verComprobante(ruta) {
 
                   {/* Proyecto */}
 
-                  <td className="p-4">
+                  <td className="px-3 py-2 max-w-[180px]">
 
-                    <div className="font-semibold">
+                   <div className="font-semibold truncate" title={aporte.proyectos?.nombre || ""}>
 
                       {aporte.proyectos?.nombre ||
                         "—"}
@@ -282,7 +270,7 @@ async function verComprobante(ruta) {
 
                     <div className="flex items-center gap-3">
 
-                      <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+                      <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
 
                         {aporte.miembros?.nombres
                           ?.charAt(0)
@@ -293,7 +281,7 @@ async function verComprobante(ruta) {
 
                       <div>
 
-                        <div className="font-semibold">
+                        <div className="font-semibold text-sm whitespace-nowrap">
 
                           {aporte.miembros?.nombres ||
                             "—"}
@@ -309,7 +297,7 @@ async function verComprobante(ruta) {
 
                   {/* Valor */}
 
-                  <td className="p-4 text-right font-semibold whitespace-nowrap">
+                  <td className="px-3 py-2 text-right font-semibold whitespace-nowrap">
 
                     {formatoMoneda(
                       aporte.valor
@@ -320,11 +308,11 @@ async function verComprobante(ruta) {
 
                   {/* Método */}
 
-                  <td className="p-4">
+                  <td className="px-3 py-2">
 
                     {aporte.metodos_pago?.nombre ? (
 
-                      <span className="inline-flex px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm">
+                      <span className="inline-flex px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs whitespace-nowrap">
 
                         {aporte.metodos_pago.nombre}
 
@@ -343,37 +331,38 @@ async function verComprobante(ruta) {
 
                   {/* Estado */}
 
-                  <td className="p-4 text-center">
+                 <td className="px-3 py-2 text-center">
 
-                    <span
-                      className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${estadoClase(
-                        aporte.estado
-                      )}`}
-                    >
+  <span
+  className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${estadoClase(
+    aporte.estado
+  )}`}
+>
+    {aporte.estado === "Registrado" && "✓"}
 
-                      {estadoTexto(
-                        aporte.estado
-                      )}
+    {aporte.estado === "Pendiente" && "⏳"}
 
-                    </span>
+    {aporte.estado === "Anulado" && "✕"}
 
-                    {aporte.motivo_rechazo && (
+    {estadoTexto(aporte.estado)}
 
-                      <div
-                        className="mt-2 text-xs text-red-600 max-w-[180px]"
-                        title={aporte.motivo_rechazo}
-                      >
-                        {aporte.motivo_rechazo}
-                      </div>
+  </span>
 
-                    )}
+  {aporte.motivo_rechazo && (
+    <div
+      className="mt-2 text-xs text-red-600 max-w-[180px] mx-auto"
+      title={aporte.motivo_rechazo}
+    >
+      {aporte.motivo_rechazo}
+    </div>
+  )}
 
-                  </td>
+</td>
   {/* =================================
     COMPROBANTE
 ================================= */}
 
-<td className="p-4 text-center">
+<td className="px-3 py-2 text-center">
 
   {aporte.comprobante_ruta ? (
 
@@ -384,8 +373,7 @@ async function verComprobante(ruta) {
           aporte.comprobante_ruta
         )
       }
-      className="inline-flex items-center gap-1 rounded-lg bg-blue-100 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-200"
-      title="Ver comprobante"
+    className="inline-flex items-center gap-1 rounded-lg bg-blue-100 px-2 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-200 whitespace-nowrap"
     >
 
       📎 Ver comprobante
@@ -401,84 +389,74 @@ async function verComprobante(ruta) {
   )}
 
 </td>
-{/* Aprobar / Rechazar */}
+{/* =================================
+    OBSERVACIÓN
+================================= */}
 
-{puedeAdministrar &&
-  aporte.estado === "Pendiente" && (
-    <>
-      <button
-        type="button"
-        onClick={() => aprobar(aporte.id)}
-        className="rounded-lg bg-green-600 px-3 py-2 text-white hover:bg-green-700"
-        title="Aprobar aporte"
-      >
-        ✅
-      </button>
+<td className="hidden md:table-cell px-3 py-2 text-gray-600 max-w-[180px]">
+  <div
+    className="truncate text-xs"
+    title={aporte.observacion || ""}
+  >
+    {aporte.observacion || "—"}
+  </div>
+</td>
+{/* =================================
+    ACCIONES
+================================= */}
 
-      <button
-        type="button"
-        onClick={() => rechazar(aporte.id)}
-        className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
-        title="Rechazar aporte"
-      >
-        ❌
-      </button>
-    </>
-)}
-                  {/* Observación */}
+<td className="px-3 py-2">
+  <div className="flex flex-wrap items-center justify-center gap-1.5">
 
-                  <td className="p-4 text-gray-600 max-w-[250px]">
+    {/* Aprobar / Rechazar */}
 
-                    <div
-                      className="truncate"
-                      title={
-                        aporte.observacion ||
-                        ""
-                      }
-                    >
+    {puedeAdministrar &&
+      aporte.estado === "Pendiente" && (
+        <>
+          <button
+            type="button"
+            onClick={() => aprobar(aporte.id)}
+            className="rounded-lg bg-green-600 px-2 py-1.5 text-sm text-white hover:bg-green-700"
+            title="Aprobar aporte"
+          >
+            ✅
+          </button>
 
-                      {aporte.observacion ||
-                        "—"}
+          <button
+            type="button"
+            onClick={() => rechazar(aporte.id)}
+            className="rounded-lg bg-red-600 px-2 py-1.5 text-sm text-white hover:bg-red-700"
+            title="Rechazar aporte"
+          >
+            ❌
+          </button>
+        </>
+      )}
 
-                    </div>
+    {/* Editar */}
 
-                  </td>
+    <button
+      type="button"
+      onClick={() => editar(aporte)}
+      className="rounded-lg bg-yellow-400 px-2 py-1.5 text-sm hover:bg-yellow-500"
+      title="Editar aporte"
+    >
+      ✏️
+    </button>
 
+    {/* Eliminar */}
 
-                  {/* Acciones */}
+    <button
+      type="button"
+      onClick={() => abrirEliminar(aporte.id)}
+      className="rounded-lg bg-red-600 px-2 py-1.5 text-sm text-white hover:bg-red-700"
+      title="Eliminar aporte"
+    >
+      🗑️
+    </button>
 
-                  <td className="p-4">
-
-                    <div className="flex justify-center gap-2">
-
-                      {/* Editar */}
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          editar(aporte)
-                        }
-                        className="rounded-lg bg-yellow-400 px-3 py-2 hover:bg-yellow-500"
-                        title="Editar aporte"
-                      >
-
-                        ✏️
-
-                      </button>
-
-
-                      {/* Eliminar */}
-<button
-  type="button"
- onClick={() => abrirEliminar(aporte.id)}
-  className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
-  title="Eliminar aporte"
->
-  🗑️
-</button>
-                    </div>
-
-                  </td>
+  </div>
+</td>
 
                 </tr>
 

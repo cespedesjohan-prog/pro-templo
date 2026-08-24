@@ -1,19 +1,16 @@
-
 import { NavLink, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 function MainLayout() {
-
   const [menuAbierto, setMenuAbierto] = useState(false);
+
   const {
     perfil,
     cerrarSesion,
   } = useAuth();
 
   const rol = perfil?.rol;
-
- 
 
   // ======================================
   // MENÚ SEGÚN ROL
@@ -97,17 +94,9 @@ function MainLayout() {
     },
   ];
 
-  // ======================================
-  // FILTRAR MENÚ
-  // ======================================
-
   const menuVisible = menu.filter(
     (item) => item.roles.includes(rol)
   );
-
-  // ======================================
-  // CERRAR MENÚ MÓVIL
-  // ======================================
 
   const cerrarMenuMovil = () => {
     setMenuAbierto(false);
@@ -120,8 +109,14 @@ function MainLayout() {
           BARRA SUPERIOR - SOLO MÓVIL
       ================================== */}
 
-      <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between bg-slate-900 px-4 text-white shadow-md lg:hidden">
-
+      <header
+        className="
+          fixed inset-x-0 top-0 z-50
+          flex h-16 items-center justify-between
+          bg-slate-900 px-4 text-white shadow-md
+          lg:hidden
+        "
+      >
         <button
           type="button"
           onClick={() => setMenuAbierto(true)}
@@ -136,12 +131,11 @@ function MainLayout() {
         </div>
 
         <div className="w-10" />
-
       </header>
 
 
       {/* ==================================
-          FONDO OSCURO - MÓVIL
+          FONDO OSCURO - SOLO MÓVIL
       ================================== */}
 
       {menuAbierto && (
@@ -149,7 +143,11 @@ function MainLayout() {
           type="button"
           aria-label="Cerrar menú"
           onClick={cerrarMenuMovil}
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="
+            fixed inset-0 z-40
+            bg-black/50
+            lg:hidden
+          "
         />
       )}
 
@@ -158,23 +156,23 @@ function MainLayout() {
           SIDEBAR
       ================================== */}
 
-     <aside
-  className={`
-    fixed inset-y-0 left-0 z-50
-    w-64 bg-slate-900 text-white p-6
-    flex flex-col
-    transform transition-transform duration-300
-    md:static md:translate-x-0
-    ${menuAbierto ? "translate-x-0" : "-translate-x-full"}
-  `}
->
-<button
-  type="button"
-  onClick={() => setMenuAbierto(false)}
-  className="mb-4 self-end rounded-lg px-3 py-2 text-xl hover:bg-slate-800 md:hidden"
->
-  ✕
-</button>
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-50
+          w-64 bg-slate-900 text-white
+          p-6
+          flex flex-col
+          transform transition-transform duration-300
+
+          ${menuAbierto
+            ? "translate-x-0"
+            : "-translate-x-full"
+          }
+
+          lg:translate-x-0
+        `}
+      >
+
         {/* ==================================
             LOGO
         ================================== */}
@@ -192,7 +190,11 @@ function MainLayout() {
             <button
               type="button"
               onClick={cerrarMenuMovil}
-              className="rounded-lg p-2 text-xl hover:bg-slate-800 lg:hidden"
+              className="
+                rounded-lg p-2 text-xl
+                hover:bg-slate-800
+                lg:hidden
+              "
               aria-label="Cerrar menú"
             >
               ✕
@@ -232,22 +234,24 @@ function MainLayout() {
 
           {menuVisible.map((item) => (
 
-        <NavLink
-  key={item.ruta}
-  to={item.ruta}
-  end={item.ruta === "/"}
-  onClick={() => setMenuAbierto(false)}
-  className={({ isActive }) =>
-    `block rounded-lg px-4 py-3 transition ${
-      isActive
-        ? "bg-blue-600"
-        : "hover:bg-slate-800"
-    }`
-  }
->
-
+            <NavLink
+              key={item.ruta}
+              to={item.ruta}
+              end={item.ruta === "/"}
+              onClick={cerrarMenuMovil}
+              className={({ isActive }) =>
+                `
+                  block rounded-lg px-4 py-3
+                  transition
+                  ${
+                    isActive
+                      ? "bg-blue-600"
+                      : "hover:bg-slate-800"
+                  }
+                `
+              }
+            >
               {item.icono} {item.nombre}
-
             </NavLink>
 
           ))}
@@ -269,7 +273,11 @@ function MainLayout() {
         <button
           type="button"
           onClick={cerrarSesion}
-          className="w-full rounded-lg px-4 py-3 text-left text-red-300 transition hover:bg-red-900/30"
+          className="
+            w-full rounded-lg px-4 py-3
+            text-left text-red-300
+            transition hover:bg-red-900/30
+          "
         >
           🚪 Cerrar sesión
         </button>
@@ -283,14 +291,23 @@ function MainLayout() {
 
       <main className="min-h-screen min-w-0 bg-gray-100 pt-16 lg:ml-64 lg:pt-0">
 
-        <div className="w-full min-w-0 p-4 sm:p-6 lg:p-8">
-<button
-  type="button"
-  onClick={() => setMenuAbierto(true)}
-  className="mb-4 rounded-lg bg-slate-900 px-4 py-2 text-xl text-white md:hidden"
->
-  ☰
-</button>
+  <div className="w-full min-w-0 px-3 py-4 sm:px-5 sm:py-5 lg:px-6 lg:py-6">
+
+          {/* BOTÓN MENÚ - SOLO MÓVIL */}
+
+          <button
+            type="button"
+            onClick={() => setMenuAbierto(true)}
+            className="
+              mb-4 rounded-lg
+              bg-slate-900 px-4 py-2
+              text-xl text-white
+              md:hidden
+            "
+          >
+            ☰
+          </button>
+
           <Outlet />
 
         </div>

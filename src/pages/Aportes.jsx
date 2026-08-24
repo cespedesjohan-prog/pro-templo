@@ -178,7 +178,24 @@ async function cargarProyectos() {
 
     const data = await obtenerAportes();
 
-    let datos = data ?? [];
+console.log("===== DEBUG APORTES =====");
+console.log("Usuario Auth:", usuario?.id);
+console.log("Perfil:", perfil);
+console.log("Rol:", perfil?.rol);
+console.log("Miembro ID del perfil:", perfil?.miembro_id);
+console.log("Aportes obtenidos:", data);
+
+console.log(
+  "IDs de miembros en aportes:",
+  (data ?? []).map((aporte) => ({
+    aporte_id: aporte.id,
+    miembro_id: aporte.miembro_id,
+    usuario_id: aporte.usuario_id,
+    estado: aporte.estado,
+  }))
+);
+
+let datos = data ?? [];
 
     if (esMiembro) {
 
@@ -719,30 +736,48 @@ async function confirmarEliminar() {
   // =====================================
 // Buscar
 // =====================================
-
 const aportesFiltrados = useMemo(() => {
 
   const texto = buscar
     .toLowerCase()
     .trim();
 
+  if (!texto) {
+    return aportes;
+  }
+
   return aportes.filter((a) => {
 
-    return (
-
+    const miembro =
       a.miembros?.nombres
-        ?.toLowerCase()
-        .includes(texto) ||
+        ?.toLowerCase() || "";
 
+    const proyecto =
+      a.proyectos?.nombre
+        ?.toLowerCase() || "";
+
+    const metodo =
       a.metodos_pago?.nombre
-        ?.toLowerCase()
-        .includes(texto)
+        ?.toLowerCase() || "";
 
+    if (esMiembro) {
+
+      return (
+        proyecto.includes(texto) ||
+        metodo.includes(texto)
+      );
+
+    }
+
+    return (
+      miembro.includes(texto) ||
+      proyecto.includes(texto) ||
+      metodo.includes(texto)
     );
 
   });
 
-}, [buscar, aportes]);
+}, [buscar, aportes, esMiembro]);
 
 
 // =====================================
@@ -754,7 +789,22 @@ const aportesRegistrados = aportes.filter(
   (aporte) =>
     aporte.estado === "Registrado"
 );
+// =====================================
+// APORTES PENDIENTES
+// =====================================
 
+const aportesPendientes = aportes.filter(
+  (aporte) =>
+    aporte.estado === "Pendiente"
+);
+
+const totalPendiente =
+  aportesPendientes.reduce(
+    (total, aporte) =>
+      total +
+      Number(aporte.valor || 0),
+    0
+  );
 
 // =====================================
 // TOTAL APORTADO
@@ -864,11 +914,11 @@ return (
         ENCABEZADO
     ===================================== */}
 
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
       <div>
 
-        <h1 className="text-4xl font-bold text-gray-800">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">
 
           {esMiembro
             ? "Mis aportes"
@@ -876,7 +926,7 @@ return (
 
         </h1>
 
-        <p className="mt-2 text-gray-500">
+        <p className="mt-1 text-sm sm:text-base text-gray-500">
 
           {esMiembro
             ? "Consulta y registra tus aportes."
@@ -889,7 +939,7 @@ return (
 
       <button
         onClick={nuevoAporte}
-        className="rounded-xl bg-blue-600 px-6 py-3 text-white shadow hover:bg-blue-700"
+        className="w-full sm:w-auto rounded-xl bg-blue-600 px-4 py-2.5 text-sm sm:text-base text-white shadow hover:bg-blue-700"
       >
 
         {esMiembro
@@ -908,61 +958,63 @@ return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
 
 
-      {/* TOTAL APORTADO */}
+      {/* TOTAL REGISTRADO */}
 
-      <div className="rounded-2xl bg-white p-5 shadow">
+<div className="rounded-2xl bg-white p-5 shadow">
 
-        <p className="text-sm text-gray-500">
-          Total aportado
-        </p>
+  <p className="text-sm text-gray-500">
+    Total registrado
+  </p>
 
-        <p className="mt-2 text-2xl font-bold text-gray-800">
+  <p className="mt-2 text-2xl font-bold text-gray-800">
+    {new Intl.NumberFormat(
+      "es-CO",
+      {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0,
+      }
+    ).format(totalAportado)}
+  </p>
 
-          {new Intl.NumberFormat(
-            "es-CO",
-            {
-              style: "currency",
-              currency: "COP",
-              maximumFractionDigits: 0,
-            }
-          ).format(totalAportado)}
+  <p className="mt-1 text-xs text-green-600">
+    ✓ Aportes confirmados
+  </p>
 
-        </p>
+</div>
 
-      </div>
+     {/* PENDIENTE DE APROBACIÓN */}
 
+<div className="rounded-2xl bg-white p-5 shadow">
 
-      {/* APORTES DEL MES */}
+  <p className="text-sm text-gray-500">
+    Pendiente de aprobación
+  </p>
 
-      <div className="rounded-2xl bg-white p-5 shadow">
+  <p className="mt-2 text-2xl font-bold text-yellow-600">
+    {new Intl.NumberFormat(
+      "es-CO",
+      {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0,
+      }
+    ).format(totalPendiente)}
+  </p>
 
-        <p className="text-sm text-gray-500">
-          Aportes del mes
-        </p>
+  <p className="mt-1 text-xs text-yellow-600">
+    ⏳ En proceso de verificación
+  </p>
 
-        <p className="mt-2 text-2xl font-bold text-green-600">
-
-          {new Intl.NumberFormat(
-            "es-CO",
-            {
-              style: "currency",
-              currency: "COP",
-              maximumFractionDigits: 0,
-            }
-          ).format(totalMes)}
-
-        </p>
-
-      </div>
-
+</div>
 
       {/* NÚMERO DE APORTES */}
 
       <div className="rounded-2xl bg-white p-5 shadow">
 
         <p className="text-sm text-gray-500">
-          Número de aportes
-        </p>
+  Aportes registrados
+</p>
 
         <p className="mt-2 text-2xl font-bold text-blue-600">
 
@@ -1004,15 +1056,18 @@ return (
     ===================================== */}
 
     <input
-      type="text"
-      placeholder="Buscar por miembro o método..."
-      value={buscar}
-      onChange={(e) =>
-        setBuscar(e.target.value)
-      }
-      className="w-full md:w-96 rounded-xl border border-gray-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-    />
-
+  type="text"
+  placeholder={
+    esMiembro
+      ? "Buscar por proyecto o método..."
+      : "Buscar por miembro o método..."
+  }
+  value={buscar}
+  onChange={(e) =>
+    setBuscar(e.target.value)
+  }
+  className="w-full md:w-96 rounded-xl border border-gray-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+/>
 
     {/* =====================================
         TABLA

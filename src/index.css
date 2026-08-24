@@ -228,3 +228,136 @@
     font-weight: 700 !important;
   }
 }
+/* =========================================
+   AJUSTE GENERAL DEL FRONTEND
+   No afecta Android ni lógica de la aplicación
+========================================= */
+
+/* Evita que el contenido se vea excesivamente grande */
+html {
+  font-size: 15px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+/* Contenedores principales */
+main {
+  min-width: 0;
+}
+
+/* =========================================
+   TARJETAS
+========================================= */
+
+.bg-white {
+  max-width: 100%;
+}
+
+/* Reduce ligeramente el espacio interno */
+.p-8 {
+  padding: 1.5rem !important;
+}
+
+.p-6 {
+  padding: 1.25rem !important;
+}
+
+/* =========================================
+   TÍTULOS
+========================================= */
+
+h1 {
+  line-height: 1.15;
+}
+
+h2 {
+  line-height: 1.2;
+}
+
+/* =========================================
+   TABLAS
+========================================= */
+
+table {
+  max-width: 100%;
+}
+
+th,
+td {
+  white-space: normal;
+  word-break: normal;
+}
+
+/* =========================================
+   BOTONES
+========================================= */
+
+button {
+  max-width: 100%;
+}
+
+/* =========================================
+   PANTALLAS GRANDES
+========================================= */
+
+@media (min-width: 1280px) {
+
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  th,
+  td {
+    padding: 0.65rem 0.75rem;
+  }
+}
+
+/* =========================================
+   PANTALLAS MEDIANAS
+========================================= */
+
+@media (min-width: 768px) and (max-width: 1279px) {
+
+  html {
+    font-size: 14px;
+  }
+}
+
+/* =========================================
+   MÓVIL
+========================================= */
+
+@media (max-width: 767px) {
+
+  html {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.35rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+  }
+}
