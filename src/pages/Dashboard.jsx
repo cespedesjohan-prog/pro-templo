@@ -134,7 +134,226 @@ function Dashboard() {
         </div>
 
       </div>
+      {/* =========================================
+          PROYECTOS ACTIVOS + TOP 10 APORTANTES
+      ========================================= */}
 
+      <div className="grid min-w-0 grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+
+        {/* =========================================
+            PROYECTOS ACTIVOS
+        ========================================= */}
+
+        <div className="min-w-0 rounded-2xl bg-white p-5 shadow">
+
+          <div className="mb-4 flex items-center justify-between">
+
+            <div>
+              <h2 className="text-lg font-bold text-gray-800">
+                🏗️ Proyectos activos
+              </h2>
+
+              <p className="text-sm text-gray-500">
+                Proyectos actualmente en ejecución
+              </p>
+            </div>
+
+            <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">
+              {dashboard.proyectosActivos?.length || 0}
+            </span>
+
+          </div>
+
+          {dashboard.proyectosActivos?.length > 0 ? (
+
+            <div className="space-y-3">
+
+              {dashboard.proyectosActivos.map((proyecto) => (
+
+                <div
+                  key={proyecto.id}
+                  className="rounded-xl border border-gray-200 p-4"
+                >
+
+                  <div className="flex items-start gap-3">
+
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-xl">
+                      {proyecto.icono || "🏗️"}
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+
+                      <h3 className="truncate font-semibold text-gray-800">
+                        {proyecto.nombre || "Sin nombre"}
+                      </h3>
+
+                      {proyecto.descripcion && (
+                        <p className="mt-1 text-sm text-gray-500">
+                          {proyecto.descripcion}
+                        </p>
+                      )}
+
+                      <div className="mt-2 flex flex-wrap gap-2">
+
+                        {proyecto.fecha_inicio && (
+                          <span className="text-xs text-gray-500">
+                            Inicio:{" "}
+                            {new Date(
+                              `${proyecto.fecha_inicio}T00:00:00`
+                            ).toLocaleDateString("es-CO")}
+                          </span>
+                        )}
+
+                        {proyecto.meta && (
+                          <span className="text-xs font-medium text-blue-600">
+                            Meta:{" "}
+                            {Number(
+                              proyecto.meta
+                            ).toLocaleString("es-CO", {
+                              style: "currency",
+                              currency: "COP",
+                              maximumFractionDigits: 0,
+                            })}
+                          </span>
+                        )}
+
+                      </div>
+
+                    </div>
+
+                    <span className="shrink-0 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+                      Activo
+                    </span>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          ) : (
+
+            <div className="rounded-xl bg-gray-50 p-6 text-center text-sm text-gray-500">
+              No hay proyectos activos actualmente.
+            </div>
+
+          )}
+
+        </div>
+
+
+        {/* =========================================
+            TOP 10 APORTANTES
+        ========================================= */}
+
+        <div className="min-w-0 rounded-2xl bg-white p-5 shadow">
+
+          <div className="mb-4">
+
+            <h2 className="text-lg font-bold text-gray-800">
+              🏆 Top 10 aportantes
+            </h2>
+
+            <p className="text-sm text-gray-500">
+              Ranking según aportes registrados
+            </p>
+
+          </div>
+
+          {dashboard.topAportantes?.length > 0 ? (
+
+            <div className="space-y-2">
+
+              {dashboard.topAportantes.map(
+                (aportante, index) => (
+
+                  <div
+                    key={`${aportante.nombre}-${index}`}
+                    className="flex items-center gap-3 rounded-xl border border-gray-100 p-3"
+                  >
+
+                    {/* Posición */}
+
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-sm font-bold text-gray-700">
+
+                      {index === 0
+                        ? "🥇"
+                        : index === 1
+                        ? "🥈"
+                        : index === 2
+                        ? "🥉"
+                        : index + 1}
+
+                    </div>
+
+
+                    {/* Avatar */}
+
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+
+                      {aportante.nombre
+                        ?.charAt(0)
+                        ?.toUpperCase() || "?"}
+
+                    </div>
+
+
+                    {/* Nombre */}
+
+                    <div className="min-w-0 flex-1">
+
+                      <p className="truncate text-sm font-semibold text-gray-800">
+                        {aportante.nombre}
+                      </p>
+
+                      <p className="text-xs text-gray-500">
+                        {aportante.cantidad}{" "}
+                        {aportante.cantidad === 1
+                          ? "aporte"
+                          : "aportes"}
+                      </p>
+
+                    </div>
+
+
+                    {/* Total */}
+
+                    <div className="shrink-0 text-right">
+
+                      <p className="text-sm font-bold text-green-600">
+
+                        {Number(
+                          aportante.total || 0
+                        ).toLocaleString("es-CO", {
+                          style: "currency",
+                          currency: "COP",
+                          maximumFractionDigits: 0,
+                        })}
+
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                )
+              )}
+
+            </div>
+
+          ) : (
+
+            <div className="rounded-xl bg-gray-50 p-6 text-center text-sm text-gray-500">
+              Aún no hay aportes registrados.
+            </div>
+
+          )}
+
+        </div>
+
+      </div>
       {/* =========================================
           GRÁFICOS
       ========================================= */}

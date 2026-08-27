@@ -10,7 +10,7 @@ export async function obtenerDashboard() {
 
   const [
     miembros,
-    proyecto,
+    proyectos,
     aportes,
     prestamos,
   ] = await Promise.all([
@@ -24,33 +24,30 @@ export async function obtenerDashboard() {
       .select("*", { count: "exact", head: true }),
 
     // -----------------------------------------------------
-    // PROYECTO ACTIVO
+    // PROYECTOS ACTIVOS
     // -----------------------------------------------------
 
     supabase
       .from("proyectos")
       .select("*")
       .eq("estado", "Activo")
-      .maybeSingle(),
+      .order("id", { ascending: false }),
 
     // -----------------------------------------------------
-    // APORTES
-    //
-    // IMPORTANTE:
-    // SOLO TRAEMOS APORTES APROBADOS
+    // APORTES REGISTRADOS
     // -----------------------------------------------------
 
     supabase
-  .from("aportes")
-  .select(`
-    id,
-    fecha,
-    valor,
-    estado,
-    miembros(nombres),
-    metodos_pago(nombre)
-  `)
-  .eq("estado", "Registrado"),
+      .from("aportes")
+      .select(`
+        id,
+        fecha,
+        valor,
+        estado,
+        miembros(nombres),
+        metodos_pago(nombre)
+      `)
+      .eq("estado", "Registrado"),
 
     // -----------------------------------------------------
     // PRÉSTAMOS ACTIVOS
@@ -71,11 +68,25 @@ export async function obtenerDashboard() {
   const totalMiembros =
     miembros.count || 0;
 
+  const listaProyectos =
+    proyectos.data || [];
+
   const listaAportes =
     aportes.data || [];
 
   const listaPrestamos =
     prestamos.data || [];
+
+
+  // =====================================================
+  // PROYECTO PRINCIPAL
+  //
+  // Conservamos el primer proyecto activo para que
+  // ProyectoCard siga funcionando.
+  // =====================================================
+
+  const proyecto =
+    listaProyectos[0] || null;
 
 
   // =====================================================
@@ -95,10 +106,6 @@ export async function obtenerDashboard() {
 
   // =====================================================
   // TOTAL RECAUDADO
-  //
-  // Como listaAportes contiene únicamente
-  // aportes aprobados, los pendientes
-  // NO se cuentan.
   // =====================================================
 
   const totalRecaudado =
@@ -137,7 +144,7 @@ export async function obtenerDashboard() {
 
 
   // =====================================================
-  // ÚLTIMO APORTE APROBADO
+  // APORTES ORDENADOS
   // =====================================================
 
   const aportesOrdenados =
@@ -147,46 +154,84 @@ export async function obtenerDashboard() {
         new Date(a.fecha)
     );
 
+
+  // =====================================================
+  // ÚLTIMO APORTE
+  // =====================================================
+
   const ultimoAporte =
     aportesOrdenados[0] || null;
 
 
   // =====================================================
-  // AVANCE DEL PROYECTO
-  //
-  // SOLO SE CALCULA CON APORTES APROBADOS
+  // AVANCE DEL PROYECTO PRINCIPAL
   // =====================================================
 
   let avance = 0;
 
   if (
-    proyecto.data &&
-    Number(proyecto.data.meta) > 0
+    proyecto &&
+    Number(proyecto.meta) > 0
   ) {
 
     avance =
       (
         totalRecaudado /
-        Number(proyecto.data.meta)
+        Number(proyecto.meta)
       ) * 100;
 
-    // Evitamos superar 100%
-    avance = Math.min(avance, 100);
+    avance =
+      Math.min(avance, 100);
   }
 
 
   // =====================================================
-  // ÚLTIMOS 5 APORTES APROBADOS
+  // ÚLTIMOS 5 APORTES
   // =====================================================
 
   const ultimosAportes =
-    [...listaAportes]
+    aportesOrdenados.slice(0, 5);
+
+
+  // =====================================================
+  // TOP 10 APORTANTES
+  //
+  // SOLO APORTES REGISTRADOS
+  // =====================================================
+
+  const aportantes = {};
+
+  listaAportes.forEach((aporte) => {
+
+    const nombre =
+      aporte.miembros?.nombres ||
+      "Sin nombre";
+
+    if (!aportantes[nombre]) {
+
+      aportantes[nombre] = {
+        nombre,
+        total: 0,
+        cantidad: 0,
+      };
+
+    }
+
+    aportantes[nombre].total +=
+      Number(aporte.valor || 0);
+
+    aportantes[nombre].cantidad += 1;
+
+  });
+
+
+  const topAportantes =
+    Object.values(aportantes)
       .sort(
         (a, b) =>
-          new Date(b.fecha) -
-          new Date(a.fecha)
+          b.total - a.total
       )
-      .slice(0, 5);
+      .slice(0, 10);
 
 
   // =====================================================
@@ -194,7 +239,6 @@ export async function obtenerDashboard() {
   // =====================================================
 
   const aportesPorMes = {};
-
 
   listaAportes.forEach((aporte) => {
 
@@ -210,9 +254,7 @@ export async function obtenerDashboard() {
       );
 
     if (!aportesPorMes[mes]) {
-
       aportesPorMes[mes] = 0;
-
     }
 
     aportesPorMes[mes] +=
@@ -239,20 +281,15 @@ export async function obtenerDashboard() {
 
   const metodos = {};
 
-
   listaAportes.forEach((aporte) => {
 
     const metodo =
       aporte.metodos_pago?.nombre ||
       "Sin método";
 
-
     if (!metodos[metodo]) {
-
       metodos[metodo] = 0;
-
     }
-
 
     metodos[metodo] +=
       Number(aporte.valor || 0);
@@ -288,8 +325,12 @@ export async function obtenerDashboard() {
 
     ultimoAporte,
 
-    proyecto:
-      proyecto.data,
+    // Proyecto principal
+    proyecto,
+
+    // TODOS los proyectos activos
+    proyectosActivos:
+      listaProyectos,
 
     avance,
 
@@ -300,6 +341,9 @@ export async function obtenerDashboard() {
     graficoMetodo,
 
     saldoPrestamos,
+
+    // Ranking
+    topAportantes,
 
   };
 
