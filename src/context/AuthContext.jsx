@@ -42,37 +42,53 @@ export function AuthProvider({ children }) {
 
         .from("perfiles")
 
-.select(`
-  id,
-  nombres,
-  rol,
-  activo,
-  miembro_id,
-  creado_en,
-  actualizado_en
-`)
+       .select(`
+         id,
+         nombres,
+         rol,
+         activo,
+         miembro_id
+       `)
 
-        .eq("id", userId)
+       .eq("id", userId)
 
-        .maybeSingle();
+       .maybeSingle();
 
 
-      if (error) {
+     if (error) {
 
-        console.error(
-          "Error cargando perfil:",
-          error
-        );
+       console.error(
+         "Error cargando perfil:",
+         error
+       );
 
-        setPerfil(null);
+       setPerfil(null);
 
-        return null;
-      }
+       return null;
+     }
+
+     let perfilData = data ?? null;
+
+     if (perfilData && perfilData.miembro_id) {
+       const { data: miembroData, error: miembroError } = await supabase
+         .from("miembros")
+         .select("celula, ministerio")
+         .eq("id", perfilData.miembro_id)
+         .maybeSingle();
+
+       if (!miembroError && miembroData) {
+         perfilData = {
+           ...perfilData,
+           celula: miembroData.celula ?? null,
+           ministerio: miembroData.ministerio ?? null,
+         };
+       }
+     }
 
 
-      setPerfil(data ?? null);
+     setPerfil(perfilData);
 
-      return data;
+     return perfilData;
 
     } catch (error) {
 
@@ -266,16 +282,18 @@ export function AuthProvider({ children }) {
 
 
     // Cargar perfil inmediatamente
+    let perfilActual = null;
+
     if (data.user?.id) {
 
-      await cargarPerfil(
+      perfilActual = await cargarPerfil(
         data.user.id
       );
 
     }
 
 
-    return data;
+    return perfilActual ?? data;
 
   }
 

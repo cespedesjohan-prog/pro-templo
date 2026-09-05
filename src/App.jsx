@@ -1,7 +1,5 @@
-import Miembros from "./pages/Miembros";
-
 function App() {
-  return <Miembros />;
+  return null;
 }
 
 export default App;

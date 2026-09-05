@@ -822,3 +822,25 @@ table {
   }
 
 }
+.iglesia {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.iglesia h1 {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 24px;
+}
+
+.iglesia p {
+  margin: 5px 0 0;
+  color: #555;
+}

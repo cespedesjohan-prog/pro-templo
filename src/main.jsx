@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 
 import {
   createBrowserRouter,
+  Navigate,
   RouterProvider,
 } from "react-router-dom";
 
@@ -14,20 +15,66 @@ import "./index.css";
 
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 // ======================================
 // PÁGINAS
 // ======================================
 
 import MainLayout from "./layouts/MainLayout";
-import Dashboard from "./pages/Dashboard";
-import Miembros from "./pages/Miembros";
-import Aportes from "./pages/Aportes";
-import Proyectos from "./pages/Proyectos";
-import PagosPrestamo from "./pages/PagosPrestamo";
-import Reportes from "./pages/Reportes";
-import ParametrosFinancieros from "./pages/ParametrosFinancieros";
+
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const DashboardIglesia = lazy(() => import("./pages/DashboardIglesia"));
+const Miembros = lazy(() => import("./pages/Miembros"));
+const GestionIglesia = lazy(() => import("./pages/GestionIglesia"));
+const GestionIglesiaMiembros = lazy(() => import("./pages/GestionIglesiaMiembros"));
+const FinanzasIglesia = lazy(() => import("./pages/gestion-iglesia/FinanzasIglesia"));
+const Aportes = lazy(() => import("./pages/Aportes"));
+const Proyectos = lazy(() => import("./pages/Proyectos"));
+const PagosPrestamo = lazy(() => import("./pages/PagosPrestamo"));
+const Reportes = lazy(() => import("./pages/Reportes"));
+const ParametrosFinancieros = lazy(() => import("./pages/ParametrosFinancieros"));
+const Cefi = lazy(() => import("./pages/gestion-iglesia/Cefi"));
+const AsistenciaCefi = lazy(() => import("./pages/gestion-iglesia/AsistenciaCefi"));
+const CalificacionesCefi = lazy(() => import("./pages/gestion-iglesia/CalificacionesCefi"));
+const MateriasCefi = lazy(() => import("./pages/gestion-iglesia/MateriasCefi"));
+const DashboardCefi = lazy(() => import("./pages/gestion-iglesia/DashboardCefi"));
+const MinisteriosIglesia = lazy(() => import("./pages/gestion-iglesia/MinisteriosIglesia"));
+
+const RouteFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="text-center">
+      <div className="text-2xl font-bold text-blue-600">PRO TEMPLO</div>
+      <p className="mt-2 text-gray-500">Cargando sección...</p>
+    </div>
+  </div>
+);
+
+const getHomeRouteByRole = (rol) => {
+  switch (rol) {
+    case "Administrador":
+      return "/gestion-iglesia";
+    case "Tesorero":
+    case "Miembro":
+    default:
+      return "/";
+  }
+};
+
+function HomeRedirect() {
+  const { perfil, cargando } = useAuth();
+
+  if (cargando) {
+    return <RouteFallback />;
+  }
+
+  if (perfil?.rol === "Administrador") {
+    return <Navigate to="/gestion-iglesia" replace />;
+  }
+
+  return <Dashboard />;
+}
+
 
 // ======================================
 // MODALES
@@ -73,26 +120,18 @@ const router = createBrowserRouter([
     ),
 
     children: [
-
       // ==================================
-      // DASHBOARD
+      // DASHBOARD INICIAL POR ROL
       // ==================================
 
       {
         index: true,
+        element: <HomeRedirect />,
+      },
 
-        element: (
-          <ProtectedRoute
-            rolesPermitidos={[
-              "Administrador",
-              "Tesorero",
-              "Miembro",
-            ]}
-          >
-            <Dashboard />
-          </ProtectedRoute>
-        ),
-
+      {
+        path: "*",
+        element: <Dashboard />,
       },
 
 
@@ -117,6 +156,133 @@ const router = createBrowserRouter([
 
       },
 
+// ==================================
+// DASHBOARD IGLESIA
+// ==================================
+
+{
+  path: "gestion-iglesia",
+
+  element: (
+    <ProtectedRoute
+      rolesPermitidos={[
+        "Administrador",
+      ]}
+    >
+      <DashboardIglesia />
+    </ProtectedRoute>
+  ),
+
+},
+{
+  path: "gestion-iglesia/miembros",
+
+  element: (
+    <ProtectedRoute
+      rolesPermitidos={[
+        "Administrador",
+      ]}
+    >
+      <GestionIglesiaMiembros />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "gestion-iglesia/finanzas",
+
+  element: (
+    <ProtectedRoute
+      rolesPermitidos={[
+        "Administrador",
+      ]}
+    >
+      <FinanzasIglesia />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "gestion-iglesia/ministerios",
+  element: (
+    <ProtectedRoute rolesPermitidos={["Administrador"]}>
+      <MinisteriosIglesia />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "gestion-iglesia/cefi",
+
+  element: (
+    <ProtectedRoute
+      rolesPermitidos={[
+        "Administrador",
+        "Tesorero",
+        "Miembro",
+      ]}
+    >
+      <Cefi />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "gestion-iglesia/cefi/asistencia",
+
+  element: (
+    <ProtectedRoute
+      rolesPermitidos={[
+        "Administrador",
+        "Tesorero",
+        "Miembro",
+      ]}
+    >
+      <AsistenciaCefi />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "gestion-iglesia/cefi/calificaciones",
+
+  element: (
+    <ProtectedRoute
+      rolesPermitidos={[
+        "Administrador",
+        "Tesorero",
+        "Miembro",
+      ]}
+    >
+      <CalificacionesCefi />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "gestion-iglesia/cefi/materias",
+
+  element: (
+    <ProtectedRoute
+      rolesPermitidos={[
+        "Administrador",
+        "Tesorero",
+        "Miembro",
+      ]}
+    >
+      <MateriasCefi />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "gestion-iglesia/cefi/dashboard",
+
+  element: (
+    <ProtectedRoute
+      rolesPermitidos={[
+        "Administrador",
+        "Tesorero",
+        "Miembro",
+      ]}
+    >
+      <DashboardCefi />
+    </ProtectedRoute>
+  ),
+},
 
       // ==================================
       // APORTES
@@ -257,7 +423,9 @@ ReactDOM.createRoot(
 
         {/* RUTAS */}
 
-        <RouterProvider router={router} />
+        <Suspense fallback={<RouteFallback />}>
+          <RouterProvider router={router} />
+        </Suspense>
 
         {/* HOST DE MODALES */}
 
