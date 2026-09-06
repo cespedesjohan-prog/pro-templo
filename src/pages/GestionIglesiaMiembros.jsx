@@ -854,9 +854,9 @@ function GestionIglesiaMiembros() {
           <div className="
             max-h-[92vh]
             w-full
-            max-w-3xl
+            max-w-2xl
             overflow-y-auto
-            rounded-2xl
+            rounded-3xl
             bg-white
             p-6
             shadow-2xl

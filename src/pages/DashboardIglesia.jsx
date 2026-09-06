@@ -74,7 +74,7 @@ function DashboardIglesia() {
 
   return (
     <main className="min-h-screen bg-[#f3f6f8] px-4 py-7 text-slate-900 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-[1500px]">
         <section className="relative mb-6 overflow-hidden rounded-[28px] bg-slate-950 px-6 py-8 text-white shadow-xl sm:px-9">
           <div className="relative z-10 flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
             <div><p className="text-xs font-bold uppercase tracking-[0.24em] text-amber-300">Panel de control · Gestión Iglesia</p><h1 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Buenos días, {perfil?.nombres || "Administrador"}</h1><p className="mt-2 max-w-xl text-sm leading-6 text-slate-300">Una lectura rápida de la salud operativa de tu iglesia.</p></div>

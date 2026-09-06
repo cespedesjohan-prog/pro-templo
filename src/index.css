@@ -274,14 +274,6 @@ main {
   min-width: 0;
 }
 
-/* =========================================
-   TARJETAS
-========================================= */
-
-.bg-white {
-  max-width: 100%;
-}
-
 /* Reduce ligeramente el espacio interno */
 .p-8 {
   padding: 1.5rem !important;

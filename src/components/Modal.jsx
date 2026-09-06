@@ -27,11 +27,11 @@ function Modal({
         className="
           flex
           w-full
-          max-w-2xl
+          max-w-xl
           max-h-[95vh]
           flex-col
           overflow-hidden
-          rounded-2xl
+          rounded-3xl
           bg-white
           shadow-2xl
         "
@@ -51,8 +51,8 @@ function Modal({
             border-b
             px-5
             py-4
-            sm:px-8
-            sm:py-6
+            sm:px-7
+            sm:py-5
           "
         >
 
@@ -102,7 +102,6 @@ function Modal({
             overflow-x-hidden
             p-5
             sm:p-6
-            lg:p-8
           "
         >
 

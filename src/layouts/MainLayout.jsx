@@ -1,5 +1,19 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useState } from "react";
+import {
+  BarChart3,
+  Church,
+  CreditCard,
+  Folder,
+  GraduationCap,
+  HandCoins,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  ShieldCheck,
+  Users,
+  Wallet,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 function MainLayout() {
@@ -29,43 +43,43 @@ function MainLayout() {
     {
       nombre: "Dashboard",
       ruta: "/dashboard",
-      icono: "🏠",
+      icono: LayoutDashboard,
       roles: ["Administrador", "Tesorero", "Miembro"],
     },
     {
       nombre: "Miembros",
       ruta: "/miembros",
-      icono: "👥",
+      icono: Users,
       roles: ["Administrador", "Tesorero", "Miembro"],
     },
     {
       nombre: rol === "Miembro" ? "Mis aportes" : "Aportes",
       ruta: "/aportes",
-      icono: "💰",
+      icono: HandCoins,
       roles: ["Administrador", "Tesorero", "Miembro"],
     },
     {
       nombre: "Proyectos",
       ruta: "/proyectos",
-      icono: "🏗️",
+      icono: Folder,
       roles: ["Administrador", "Tesorero", "Miembro"],
     },
     {
       nombre: "Reportes",
       ruta: "/reportes",
-      icono: "📊",
+      icono: BarChart3,
       roles: ["Administrador", "Tesorero", "Miembro"],
     },
     {
       nombre: "Pagos Préstamo",
       ruta: "/pagos-prestamo",
-      icono: "🏦",
+      icono: CreditCard,
       roles: ["Administrador", "Tesorero"],
     },
     {
       nombre: "Parámetros",
       ruta: "/parametros-financieros",
-      icono: "⚙️",
+      icono: Settings,
       roles: ["Administrador"],
     },
   ];
@@ -78,31 +92,31 @@ function MainLayout() {
     {
      nombre: "Dashboard Iglesia",
       ruta: "/gestion-iglesia",
-      icono: "⛪",
+      icono: LayoutDashboard,
       roles: ["Administrador", "Tesorero", "Miembro"],
     },
     {
       nombre: "Miembros",
       ruta: "/gestion-iglesia/miembros",
-      icono: "👥",
+      icono: Users,
       roles: ["Administrador", "Tesorero", "Miembro"],
     },
     {
       nombre: "Finanzas",
       ruta: "/gestion-iglesia/finanzas",
-      icono: "💰",
+      icono: Wallet,
       roles: ["Administrador", "Tesorero"],
     },
     {
       nombre: "Ministerios",
       ruta: "/gestion-iglesia/ministerios",
-      icono: "🤝",
+      icono: Church,
       roles: ["Administrador"],
     },
     {
       nombre: "CEFI",
       ruta: "/gestion-iglesia/cefi",
-      icono: "🎓",
+      icono: GraduationCap,
       roles: ["Administrador", "Tesorero", "Miembro"],
     },
   ];
@@ -215,8 +229,9 @@ function MainLayout() {
 
             <div>
 
-              <h2 className="text-2xl font-bold tracking-tight">
-                ⛪ PRO TEMPLO
+              <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+                <Church size={24} className="text-blue-400" />
+                PRO TEMPLO
               </h2>
 
               <p className="mt-1 text-xs text-slate-400">
@@ -251,7 +266,7 @@ function MainLayout() {
         <div className="p-4">
 
           <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
-            Sistema
+            Cambiar sistema
           </p>
 
           <div className="grid grid-cols-2 gap-2">
@@ -272,9 +287,7 @@ function MainLayout() {
               `}
             >
 
-              <div className="text-2xl">
-                💰
-              </div>
+              <Wallet className="mx-auto" size={24} />
 
               <div className="mt-1 text-xs font-bold">
                 PRO TEMPLO
@@ -299,9 +312,7 @@ function MainLayout() {
               `}
             >
 
-              <div className="text-2xl">
-                ⛪
-              </div>
+              <Church className="mx-auto" size={24} />
 
               <div className="mt-1 text-xs font-bold">
                 IGLESIA
@@ -318,15 +329,22 @@ function MainLayout() {
             USUARIO
         ================================== */}
 
-        <div className="mx-4 mb-4 rounded-xl bg-slate-900 p-4">
+        <div className="mx-4 mb-4 flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900 p-3">
 
-          <p className="text-sm font-semibold">
-            {perfil?.nombres || "Usuario"}
-          </p>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white ring-2 ring-blue-400/30">
+            {(perfil?.nombres || "U").trim().charAt(0).toUpperCase()}
+          </div>
 
-          <p className="mt-1 text-xs text-slate-400">
-            {rol || "Sin rol"}
-          </p>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold">
+              {perfil?.nombres || "Usuario"}
+            </p>
+
+            <p className="mt-1 flex items-center gap-1 text-xs text-slate-400">
+              <ShieldCheck size={13} className="text-emerald-400" />
+              {rol || "Sin rol"}
+            </p>
+          </div>
 
         </div>
 
@@ -354,7 +372,11 @@ function MainLayout() {
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-4">
 
-          {menuActual.map((item) => (
+          {menuActual.map((item) => {
+
+            const Icono = item.icono;
+
+            return (
 
             <NavLink
               key={item.ruta}
@@ -373,16 +395,14 @@ function MainLayout() {
 
                   ${
                     isActive
-                      ? "bg-blue-600 text-white shadow-md"
+                    ? "relative bg-blue-600 text-white shadow-md ring-1 ring-blue-400 before:absolute before:left-0 before:top-2 before:h-8 before:w-1 before:rounded-r-full before:bg-white"
                       : "text-slate-300 hover:bg-slate-800 hover:text-white"
                   }
                 `
               }
             >
 
-              <span className="text-xl">
-                {item.icono}
-              </span>
+              <Icono size={19} strokeWidth={2.25} />
 
               <span>
                 {item.nombre}
@@ -390,7 +410,8 @@ function MainLayout() {
 
             </NavLink>
 
-          ))}
+            );
+          })}
 
         </nav>
 
@@ -414,15 +435,17 @@ function MainLayout() {
             "
           >
 
-            <span className="text-xl">
-              🚪
-            </span>
+            <LogOut size={19} />
 
             <span>
               Cerrar sesión
             </span>
 
           </button>
+
+          <p className="mt-3 px-4 text-center text-[10px] font-medium uppercase tracking-wider text-slate-600">
+            PRO TEMPLO · v1.0
+          </p>
 
         </div>
 

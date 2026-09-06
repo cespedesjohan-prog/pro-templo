@@ -922,7 +922,7 @@ function Finanzas() {
 
       {mostrarFormularioIngreso && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
+          <div className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b bg-green-50 p-6">
               <div>
                 <h2 className="text-2xl font-bold text-green-800">💰 Registrar ingreso</h2>
@@ -1055,7 +1055,7 @@ function Finanzas() {
 
       {mostrarFormularioEgreso && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
+          <div className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b bg-red-50 p-6">
               <div>
                 <h2 className="text-2xl font-bold text-red-800">💸 Registrar egreso</h2>
@@ -1142,7 +1142,7 @@ function Finanzas() {
 
       {mostrarNuevoMiembro && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4">
-          <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
+          <div className="w-full max-w-md rounded-3xl bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b p-6">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800">Crear miembro</h2>

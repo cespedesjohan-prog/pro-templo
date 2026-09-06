@@ -299,6 +299,35 @@ export function AuthProvider({ children }) {
 
 
   // ======================================
+  // RECUPERAR CONTRASEÑA
+  // ======================================
+
+  async function solicitarRestablecimiento(email, redirectTo) {
+
+    const { error } = await supabase.auth.resetPasswordForEmail(
+      email.trim(),
+      { redirectTo }
+    );
+
+    if (error) {
+      throw error;
+    }
+
+  }
+
+
+  async function actualizarPassword(password) {
+
+    const { error } = await supabase.auth.updateUser({ password });
+
+    if (error) {
+      throw error;
+    }
+
+  }
+
+
+  // ======================================
   // CERRAR SESIÓN
   // ======================================
 
@@ -343,6 +372,10 @@ export function AuthProvider({ children }) {
         cargando,
 
         iniciarSesion,
+
+        solicitarRestablecimiento,
+
+        actualizarPassword,
 
         cerrarSesion,
 

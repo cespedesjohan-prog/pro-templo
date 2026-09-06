@@ -110,10 +110,13 @@ function Login() {
 
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#f8fafc_0%,_#e2e8f0_38%,_#dfe7ef_100%)] px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_30px_80px_rgba(15,23,42,0.12)]">
-        <div className="grid lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="relative overflow-hidden bg-slate-950 px-6 py-8 text-white sm:px-8 lg:px-10 lg:py-10">
+    <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_#f8fafc_0%,_#e2e8f0_38%,_#dfe7ef_100%)] px-4 py-6 sm:px-6">
+      <div
+        className="w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.14)]"
+        style={{ maxWidth: "420px" }}
+      >
+        <div>
+          <div className="hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.25),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(234,179,8,0.18),_transparent_28%)]" />
             <div className="relative z-10">
               <div className="mb-7 flex items-center gap-3">
@@ -152,9 +155,9 @@ function Login() {
             </div>
           </div>
 
-          <div className="bg-white px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
-            <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-[26px] bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 shadow-[0_20px_60px_rgba(37,99,235,0.35)] ring-4 ring-blue-100">
-              <img src={logoAnimado} alt="Logo de PRO TEMPLO" className="login-logo h-14 w-14 object-contain" />
+          <div className="bg-white px-6 py-7 sm:px-8">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 shadow-[0_16px_40px_rgba(37,99,235,0.3)] ring-4 ring-blue-100">
+              <img src={logoAnimado} alt="Logo de PRO TEMPLO" className="login-logo h-11 w-11 object-contain" />
             </div>
 
             <div className="text-center">
@@ -163,7 +166,7 @@ function Login() {
               <p className="mt-2 text-sm text-slate-500">Ingresa tus credenciales para continuar.</p>
             </div>
 
-            <form onSubmit={manejarLogin} className="mt-8 space-y-5">
+            <form onSubmit={manejarLogin} className="mt-7 space-y-4">
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-700">Correo electrónico</label>
                 <input
@@ -197,6 +200,15 @@ function Login() {
                     {mostrarPassword ? "Ocultar" : "Mostrar"}
                   </button>
                 </div>
+                <div className="mt-2 text-right">
+                  <button
+                    type="button"
+                    onClick={() => navigate("/olvide-contrasena")}
+                    className="text-sm font-semibold text-blue-600 transition hover:text-blue-800 hover:underline"
+                  >
+                    ¿Olvidaste tu contraseña?
+                  </button>
+                </div>
               </div>
 
               <button
@@ -208,7 +220,7 @@ function Login() {
               </button>
             </form>
 
-            <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-xs text-slate-500">
+            <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-center text-xs text-slate-500">
               PRO TEMPLO · Sistema administrativo y financiero
             </div>
           </div>

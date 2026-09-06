@@ -14,6 +14,8 @@ import "./index.css";
 // ======================================
 
 import Login from "./pages/Login";
+import OlvideContrasena from "./pages/OlvideContrasena";
+import RestablecerContrasena from "./pages/RestablecerContrasena";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
@@ -103,6 +105,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/olvide-contrasena",
+    element: <OlvideContrasena />,
+  },
+  {
+    path: "/restablecer-contrasena",
+    element: <RestablecerContrasena />,
   },
 
 
