@@ -28,7 +28,7 @@ function ProtectedRoute({
         <div className="text-center">
 
           <div className="text-2xl font-bold text-blue-600">
-            PRO TEMPLO
+            ICC PALABRA DE FE
           </div>
 
           <p className="mt-2 text-gray-500">

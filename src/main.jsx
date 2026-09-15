@@ -46,7 +46,7 @@ const MinisteriosIglesia = lazy(() => import("./pages/gestion-iglesia/Ministerio
 const RouteFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-100">
     <div className="text-center">
-      <div className="text-2xl font-bold text-blue-600">PRO TEMPLO</div>
+      <div className="text-2xl font-bold text-blue-600">ICC PALABRA DE FE</div>
       <p className="mt-2 text-gray-500">Cargando sección...</p>
     </div>
   </div>

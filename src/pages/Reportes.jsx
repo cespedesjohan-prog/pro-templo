@@ -187,7 +187,7 @@ function exportarExcel() {
     // ==================================
 
     filas.push([
-      "PRO TEMPLO"
+      "ICC PALABRA DE FE"
     ]);
 
     filas.push([
@@ -1149,7 +1149,7 @@ function exportarExcel() {
     <div className="reporte-footer print-only">
 
       <p>
-        PRO TEMPLO — Reporte financiero
+        ICC PALABRA DE FE — Reporte financiero
       </p>
 
       <p>

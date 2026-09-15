@@ -121,11 +121,11 @@ function Login() {
             <div className="relative z-10">
               <div className="mb-7 flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15 backdrop-blur-sm">
-                  <img src={logoAnimado} alt="Logo de PRO TEMPLO" className="login-logo h-9 w-9 object-contain" />
+                  <img src={logoAnimado} alt="Logo de ICC PALABRA DE FE" className="login-logo h-9 w-9 object-contain" />
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-200">Plataforma</p>
-                  <h1 className="text-xl font-black tracking-tight">PRO TEMPLO</h1>
+                  <h1 className="text-xl font-black tracking-tight">ICC PALABRA DE FE</h1>
                 </div>
               </div>
 
@@ -157,7 +157,7 @@ function Login() {
 
           <div className="bg-white px-6 py-7 sm:px-8">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 shadow-[0_16px_40px_rgba(37,99,235,0.3)] ring-4 ring-blue-100">
-              <img src={logoAnimado} alt="Logo de PRO TEMPLO" className="login-logo h-11 w-11 object-contain" />
+              <img src={logoAnimado} alt="Logo de ICC PALABRA DE FE" className="login-logo h-11 w-11 object-contain" />
             </div>
 
             <div className="text-center">
@@ -221,7 +221,7 @@ function Login() {
             </form>
 
             <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-center text-xs text-slate-500">
-              PRO TEMPLO · Sistema administrativo y financiero
+              ICC PALABRA DE FE · Sistema administrativo y financiero
             </div>
           </div>
         </div>

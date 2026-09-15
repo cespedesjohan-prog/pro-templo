@@ -553,7 +553,7 @@ function Prestamos() {
 
           <p className="mt-2 text-gray-500">
 
-            Administración de préstamos del Pro Templo
+            Administración de préstamos del ICC Palabra de Fe
 
           </p>
 

@@ -6,7 +6,7 @@ function SystemSelector({ sistemaActual, cambiarSistema }) {
   const sistemas = [
     {
       id: "protemplo",
-      nombre: "PRO TEMPLO",
+      nombre: "ICC PALABRA DE FE",
       descripcion: "Gestión financiera",
       icono: "🏛️",
     },

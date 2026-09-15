@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 
 function Cefi() {
   const [miembros, setMiembros] = useState([]);
+  const [clases, setClases] = useState([]);
+  const [docentes, setDocentes] = useState([]);
   const [grupos, setGrupos] = useState([]);
   const [grados, setGrados] = useState([]);
   const [periodos, setPeriodos] = useState([]);
@@ -24,54 +26,180 @@ function Cefi() {
   const [nombrePeriodo, setNombrePeriodo] = useState("");
   const [fechaInicioPeriodo, setFechaInicioPeriodo] = useState("");
   const [fechaFinPeriodo, setFechaFinPeriodo] = useState("");
+  const [docenteSeleccionado, setDocenteSeleccionado] = useState("");
 
   async function cargarDatos() {
-    setCargando(true);
-    const [miembrosRespuesta, gruposRespuesta, matriculasRespuesta, gradosRespuesta, periodosRespuesta] = await Promise.all([
-      supabase
-        .from("miembros")
-        .select("id, nombres, numero_identificacion, telefono_movil, correo_electronico, nivel_cefi, activo")
-        .or("nivel_cefi.is.null,nivel_cefi.eq.")
-        .order("nombres", { ascending: true }),
-      supabase
-        .from("cefi_grupos")
-        .select("id, nombre, cupo, grado_id, periodo_id, cefi_grados(nombre), cefi_periodos(nombre)")
-        .eq("activo", true)
-        .order("nombre", { ascending: true }),
-      supabase
-        .from("cefi_matriculas")
-        .select("id, miembro_id, grupo_id, estado, cefi_grupos(nombre, cefi_grados(nombre), cefi_periodos(nombre))"),
-      supabase.from("cefi_grados").select("id, nombre, orden").eq("activo", true).order("orden"),
-      supabase.from("cefi_periodos").select("id, nombre, fecha_inicio, fecha_fin").eq("activo", true).order("fecha_inicio", { ascending: false }),
-    ]);
+  setCargando(true);
 
-    const error = miembrosRespuesta.error || gruposRespuesta.error || matriculasRespuesta.error || gradosRespuesta.error || periodosRespuesta.error;
-    if (error) {
-      toast.error(`No fue posible cargar CEFI: ${error.message}`);
-    } else {
-      setMiembros(miembrosRespuesta.data || []);
-      setGrupos(gruposRespuesta.data || []);
-      setMatriculas(matriculasRespuesta.data || []);
-      setGrados(gradosRespuesta.data || []);
-      setPeriodos(periodosRespuesta.data || []);
-    }
-    setCargando(false);
+  const [
+    miembrosRespuesta,
+    gruposRespuesta,
+    matriculasRespuesta,
+    gradosRespuesta,
+    periodosRespuesta,
+    clasesRespuesta,
+    docentesRespuesta,
+  ] = await Promise.all([
+    supabase
+      .from("miembros")
+      .select(
+        "id, nombres, numero_identificacion, telefono_movil, correo_electronico, nivel_cefi, activo"
+      )
+      .or("nivel_cefi.is.null,nivel_cefi.eq.")
+      .order("nombres", { ascending: true }),
+
+    supabase
+      .from("cefi_grupos")
+      .select(`
+        id,
+        nombre,
+        cupo,
+        grado_id,
+        periodo_id,
+        docente_id,
+        cefi_grados(nombre),
+        cefi_periodos(nombre),
+        cefi_docentes(
+          id,
+          nombres,
+          apellidos
+        )
+      `)
+      .eq("activo", true)
+      .order("nombre", { ascending: true }),
+
+    supabase
+  .from("cefi_matriculas")
+  .select(`
+    id,
+    miembro_id,
+    grupo_id,
+    estado,
+    cefi_grupos(
+      nombre,
+      cefi_grados(id, nombre, orden),
+      cefi_periodos(nombre)
+    )
+  `),
+
+    supabase
+      .from("cefi_grados")
+      .select("id, nombre, orden")
+      .eq("activo", true)
+      .order("orden"),
+
+    supabase
+      .from("cefi_periodos")
+      .select("id, nombre, fecha_inicio, fecha_fin")
+      .eq("activo", true)
+      .order("fecha_inicio", { ascending: false }),
+
+    supabase
+      .from("cefi_clases")
+      .select(`
+        id,
+        grupo_id,
+        numero,
+        nombre,
+        descripcion,
+        docente_id,
+        fecha,
+        estado,
+        cefi_docentes(
+          id,
+          nombres,
+          apellidos
+        )
+      `)
+      .order("numero", { ascending: true }),
+
+    supabase
+      .from("cefi_docentes")
+      .select("id, nombres, apellidos")
+      .eq("estado", "activo")
+      .order("nombres", { ascending: true }),
+  ]);
+
+  if (
+    miembrosRespuesta.error ||
+    gruposRespuesta.error ||
+    matriculasRespuesta.error ||
+    gradosRespuesta.error ||
+    periodosRespuesta.error ||
+    clasesRespuesta.error ||
+    docentesRespuesta.error
+  ) {
+    const error =
+      miembrosRespuesta.error ||
+      gruposRespuesta.error ||
+      matriculasRespuesta.error ||
+      gradosRespuesta.error ||
+      periodosRespuesta.error ||
+      clasesRespuesta.error ||
+      docentesRespuesta.error;
+
+    toast.error(`No fue posible cargar CEFI: ${error.message}`);
+  } else {
+    setMiembros(miembrosRespuesta.data || []);
+    setGrupos(gruposRespuesta.data || []);
+    setMatriculas(matriculasRespuesta.data || []);
+    setGrados(gradosRespuesta.data || []);
+    setPeriodos(periodosRespuesta.data || []);
+    setClases(clasesRespuesta.data || []);
+    setDocentes(docentesRespuesta.data || []);
   }
 
+  setCargando(false);
+}
   useEffect(() => {
     cargarDatos();
   }, []);
 
-  const miembrosFiltrados = useMemo(() => {
+    const miembrosFiltrados = useMemo(() => {
     const termino = busqueda.trim().toLowerCase();
-    if (!termino) return miembros;
-    return miembros.filter((miembro) =>
-      [miembro.nombres, miembro.numero_identificacion, miembro.correo_electronico]
-        .filter(Boolean)
-        .some((valor) => valor.toLowerCase().includes(termino))
-    );
-  }, [busqueda, miembros]);
 
+    const miembrosFinalizados = new Set(
+      miembros
+        .filter((miembro) => {
+          const matriculasMiembro = matriculas.filter(
+            (matricula) => matricula.miembro_id === miembro.id
+          );
+
+          const ordenesFinalizadas = new Set(
+            matriculasMiembro
+              .filter((matricula) => matricula.estado === "finalizada")
+              .map(
+                (matricula) =>
+                  matricula.cefi_grupos?.cefi_grados?.orden
+              )
+              .filter(Boolean)
+          );
+
+          return [1, 2, 3, 4].every((orden) =>
+            ordenesFinalizadas.has(orden)
+          );
+        })
+        .map((miembro) => miembro.id)
+    );
+
+    const miembrosPendientes = miembros.filter(
+      (miembro) => !miembrosFinalizados.has(miembro.id)
+    );
+
+    if (!termino) return miembrosPendientes;
+
+    return miembrosPendientes.filter((miembro) =>
+      [
+        miembro.nombres,
+        miembro.numero_identificacion,
+        miembro.correo_electronico,
+      ]
+        .filter(Boolean)
+        .some((valor) =>
+          valor.toLowerCase().includes(termino)
+        )
+    );
+  }, [busqueda, miembros, matriculas]);
   function abrirMatricula(miembro) {
     setMiembroSeleccionado(miembro);
     setGrupoSeleccionado("");
@@ -129,23 +257,25 @@ function Cefi() {
     return grupos.filter((grupo) => !idsMatriculados.includes(grupo.id));
   }
 
-  function limpiarGrupo() {
-    setNombreGrupo("");
-    setGradoSeleccionado("");
-    setPeriodoSeleccionado("");
-    setCupoGrupo("");
-    setGrupoEditando(null);
-    setModalGrupo(false);
-  }
+function limpiarGrupo() {
+  setNombreGrupo("");
+  setGradoSeleccionado("");
+  setPeriodoSeleccionado("");
+  setCupoGrupo("");
+  setDocenteSeleccionado("");
+  setGrupoEditando(null);
+  setModalGrupo(false);
+}
 
   function abrirEditarGrupo(grupo) {
-    setGrupoEditando(grupo);
-    setNombreGrupo(grupo.nombre || "");
-    setGradoSeleccionado(grupo.grado_id || "");
-    setPeriodoSeleccionado(grupo.periodo_id || "");
-    setCupoGrupo(grupo.cupo || "");
-    setModalGrupo(true);
-  }
+  setGrupoEditando(grupo);
+  setNombreGrupo(grupo.nombre || "");
+  setGradoSeleccionado(grupo.grado_id || "");
+  setPeriodoSeleccionado(grupo.periodo_id || "");
+  setCupoGrupo(grupo.cupo || "");
+  setDocenteSeleccionado(grupo.docente_id || "");
+  setModalGrupo(true);
+}
 
   async function crearGrupo(evento) {
     evento.preventDefault();
@@ -153,11 +283,15 @@ function Cefi() {
 
     setGuardando(true);
     const datosGrupo = {
-      nombre: nombreGrupo.trim(),
-      grado_id: gradoSeleccionado,
-      periodo_id: periodoSeleccionado,
-      cupo: cupoGrupo ? Number(cupoGrupo) : null,
-    };
+  nombre: nombreGrupo.trim(),
+  grado_id: gradoSeleccionado,
+  periodo_id: periodoSeleccionado,
+  cupo: cupoGrupo ? Number(cupoGrupo) : null,
+  docente_id: docenteSeleccionado || null,
+};
+
+
+
     const { error } = grupoEditando
       ? await supabase.from("cefi_grupos").update(datosGrupo).eq("id", grupoEditando.id)
       : await supabase.from("cefi_grupos").insert(datosGrupo);
@@ -257,7 +391,6 @@ function Cefi() {
             </div>
           </div>
         </section>
-
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
           <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
@@ -353,6 +486,18 @@ function Cefi() {
               <input value={nombreGrupo} onChange={(evento) => setNombreGrupo(evento.target.value)} placeholder="Nombre del grupo, ej. Grupo mañana" required className="w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:border-amber-400" />
               <select value={gradoSeleccionado} onChange={(evento) => setGradoSeleccionado(evento.target.value)} required className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none focus:border-amber-400"><option value="">Selecciona el nivel</option>{grados.map((grado) => <option key={grado.id} value={grado.id}>{grado.nombre}</option>)}</select>
               <select value={periodoSeleccionado} onChange={(evento) => setPeriodoSeleccionado(evento.target.value)} required className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none focus:border-amber-400"><option value="">Selecciona el periodo</option>{periodos.map((periodo) => <option key={periodo.id} value={periodo.id}>{periodo.nombre}</option>)}</select>
+              <select
+  value={docenteSeleccionado}
+  onChange={(evento) => setDocenteSeleccionado(evento.target.value)}
+  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none focus:border-amber-400"
+>
+  <option value="">Selecciona el maestro responsable</option>
+  {docentes.map((docente) => (
+    <option key={docente.id} value={docente.id}>
+      {docente.nombres} {docente.apellidos}
+    </option>
+  ))}
+</select>
               <input type="number" min="1" value={cupoGrupo} onChange={(evento) => setCupoGrupo(evento.target.value)} placeholder="Cupo máximo (opcional)" className="w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:border-amber-400" />
             </div>
             <button disabled={guardando} type="submit" className="mt-6 w-full rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white disabled:opacity-50">{guardando ? "Guardando..." : grupoEditando ? "Actualizar grupo" : "Guardar grupo"}</button>

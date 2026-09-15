@@ -930,7 +930,7 @@ return (
 
           {esMiembro
             ? "Consulta y registra tus aportes."
-            : "Administración de aportes del Pro Templo"}
+            : "Administración de aportes del ICC Palabra de Fe"}
 
         </p>
 

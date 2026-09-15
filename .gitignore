@@ -31,3 +31,5 @@ android/keystore.properties
 backend/.venv/
 
 backend/__pycache__/
+.vercel
+.env*

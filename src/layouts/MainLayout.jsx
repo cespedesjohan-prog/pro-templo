@@ -36,7 +36,7 @@ function MainLayout() {
     !estaEnGestionIglesia;
 
   // ======================================
-  // MENÚ PRO TEMPLO
+  // MENÚ ICC PALABRA DE FE
   // ======================================
 
   const menuProTemplo = [
@@ -172,7 +172,7 @@ function MainLayout() {
         <div className="text-lg font-bold">
           {estaEnGestionIglesia
             ? "⛪ Gestión Iglesia"
-            : "⛪ PRO TEMPLO"}
+            : "⛪ ICC PALABRA DE FE"}
         </div>
 
         <div className="w-10" />
@@ -231,7 +231,7 @@ function MainLayout() {
 
               <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
                 <Church size={24} className="text-blue-400" />
-                PRO TEMPLO
+                ICC PALABRA DE FE
               </h2>
 
               <p className="mt-1 text-xs text-slate-400">
@@ -271,7 +271,7 @@ function MainLayout() {
 
           <div className="grid grid-cols-2 gap-2">
 
-            {/* PRO TEMPLO */}
+            {/* ICC PALABRA DE FE */}
 
             <NavLink
               to="/dashboard"
@@ -290,7 +290,7 @@ function MainLayout() {
               <Wallet className="mx-auto" size={24} />
 
               <div className="mt-1 text-xs font-bold">
-                PRO TEMPLO
+                ICC PALABRA DE FE
               </div>
 
             </NavLink>
@@ -359,7 +359,7 @@ function MainLayout() {
 
             {estaEnGestionIglesia
               ? "Gestión Iglesia"
-              : "PRO TEMPLO"}
+              : "ICC PALABRA DE FE"}
 
           </p>
 
@@ -444,7 +444,7 @@ function MainLayout() {
           </button>
 
           <p className="mt-3 px-4 text-center text-[10px] font-medium uppercase tracking-wider text-slate-600">
-            PRO TEMPLO · v1.0
+            ICC PALABRA DE FE · v1.0
           </p>
 
         </div>

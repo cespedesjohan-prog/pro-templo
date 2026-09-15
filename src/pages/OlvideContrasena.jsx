@@ -40,7 +40,7 @@ function OlvideContrasena() {
     <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_#f8fafc_0%,_#e2e8f0_38%,_#dfe7ef_100%)] px-4 py-6 sm:px-6">
       <div className="w-full rounded-3xl border border-slate-200 bg-white px-6 py-7 shadow-[0_24px_60px_rgba(15,23,42,0.14)] sm:px-8" style={{ maxWidth: "420px" }}>
         <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400 shadow-[0_16px_40px_rgba(37,99,235,0.3)] ring-4 ring-blue-100">
-          <img src={logoAnimado} alt="Logo de PRO TEMPLO" className="login-logo h-11 w-11 object-contain" />
+          <img src={logoAnimado} alt="Logo de ICC PALABRA DE FE" className="login-logo h-11 w-11 object-contain" />
         </div>
 
         <div className="text-center">

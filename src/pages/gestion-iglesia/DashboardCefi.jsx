@@ -23,19 +23,46 @@ function DashboardCefi() {
 
   async function cargarDashboard() {
     setCargando(true);
-    const [gruposRespuesta, matriculasRespuesta, asistenciasRespuesta, notasRespuesta] = await Promise.all([
-      supabase.from("cefi_grupos").select("id, nombre, cefi_grados(nombre), cefi_periodos(nombre)").eq("activo", true).order("nombre"),
-      supabase.from("cefi_matriculas").select("id, grupo_id, miembro_id, estado, fecha_matricula, miembros(nombres), cefi_grupos(nombre, cefi_grados(nombre), cefi_periodos(nombre))"),
-      supabase.from("cefi_asistencias").select("matricula_id, estado").eq("fecha", fecha),
-      supabase.from("cefi_calificaciones").select("matricula_id, nota, periodo_numero").not("nota", "is", null),
-    ]);
-    const error = gruposRespuesta.error || matriculasRespuesta.error || asistenciasRespuesta.error || notasRespuesta.error;
+   const [gruposRespuesta, matriculasRespuesta, clasesRespuesta, asistenciasRespuesta] = await Promise.all([
+  supabase
+    .from("cefi_grupos")
+    .select("id, nombre, cefi_grados(nombre), cefi_periodos(nombre)")
+    .eq("activo", true)
+    .order("nombre"),
+
+  supabase
+    .from("cefi_matriculas")
+    .select(`
+      id,
+      grupo_id,
+      miembro_id,
+      estado,
+      resultado_nivel,
+      fecha_matricula,
+      miembros(nombres),
+      cefi_grupos(
+        nombre,
+        cefi_grados(nombre, orden),
+        cefi_periodos(nombre)
+      )
+    `),
+
+  supabase
+    .from("cefi_clases")
+    .select("id, grupo_id, numero, nombre, fecha, estado")
+    .eq("fecha", fecha),
+
+  supabase
+    .from("cefi_asistencia_clases")
+    .select("id, clase_id, matricula_id, estado")
+]);
+    const error = gruposRespuesta.error || matriculasRespuesta.error || clasesRespuesta.error || asistenciasRespuesta.error;
     if (error) toast.error(`No fue posible cargar el dashboard: ${error.message}`);
     else {
       setGrupos(gruposRespuesta.data || []);
       setMatriculas(matriculasRespuesta.data || []);
       setAsistencias(asistenciasRespuesta.data || []);
-      setCalificaciones(notasRespuesta.data || []);
+      
     }
     setCargando(false);
   }
@@ -44,15 +71,43 @@ function DashboardCefi() {
 
   const conteoAsistencia = useMemo(() => asistencias.reduce((conteo, registro) => ({ ...conteo, [registro.estado]: (conteo[registro.estado] || 0) + 1 }), {}), [asistencias]);
   const matriculasActivas = useMemo(() => matriculas.filter((matricula) => matricula.estado === "activa"), [matriculas]);
-  const graduadosNivel4 = useMemo(() => {
-    const nivelesPorMiembro = matriculas.reduce((niveles, matricula) => {
-      if (matricula.estado !== "finalizada") return niveles;
-      const nivel = matricula.cefi_grupos?.cefi_grados?.nombre?.match(/nivel\s*(\d+)/i)?.[1];
-      if (nivel) niveles[matricula.miembro_id] = new Set([...(niveles[matricula.miembro_id] || []), nivel]);
-      return niveles;
-    }, {});
-    return matriculas.filter((matricula) => matricula.estado === "finalizada" && matricula.cefi_grupos?.cefi_grados?.nombre?.match(/nivel\s*4/i) && ["1", "2", "3", "4"].every((nivel) => nivelesPorMiembro[matricula.miembro_id]?.has(nivel)));
-  }, [matriculas]);
+const graduadosNivel4 = useMemo(() => {
+  const modulosRequeridos = [
+    "Mi Nueva Vida",
+    "Creciendo en mi Fe",
+    "Desarrollando el Propósito de Dios",
+    "Líder de Excelencia",
+  ];
+
+  const nivelesPorMiembro = matriculas.reduce((niveles, matricula) => {
+    if (matricula.estado !== "finalizada") return niveles;
+
+    const nombreModulo =
+      matricula.cefi_grupos?.cefi_grados?.nombre?.trim();
+
+    if (modulosRequeridos.includes(nombreModulo)) {
+      niveles[matricula.miembro_id] = new Set([
+        ...(niveles[matricula.miembro_id] || []),
+        nombreModulo,
+      ]);
+    }
+
+    return niveles;
+  }, {});
+
+  return matriculas.filter((matricula) => {
+    const nombreModulo =
+      matricula.cefi_grupos?.cefi_grados?.nombre?.trim();
+
+    return (
+      matricula.estado === "finalizada" &&
+      nombreModulo === "Líder de Excelencia" &&
+      modulosRequeridos.every((modulo) =>
+        nivelesPorMiembro[matricula.miembro_id]?.has(modulo)
+      )
+    );
+  });
+}, [matriculas]);
   const promedio = calificaciones.length ? calificaciones.reduce((total, registro) => total + Number(registro.nota), 0) / calificaciones.length : 0;
   const porcentajeAsistencia = matriculasActivas.length ? ((conteoAsistencia.presente || 0) / matriculasActivas.length) * 100 : 0;
   const resumenGrupos = grupos.map((grupo) => {

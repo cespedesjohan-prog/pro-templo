@@ -60,7 +60,7 @@ function Dashboard() {
         </h1>
 
         <p className="mt-1 text-sm text-gray-500 sm:mt-2 sm:text-base">
-          Bienvenido al sistema PRO TEMPLO ERP
+          Bienvenido al sistema ICC PALABRA DE FE ERP
         </p>
       </div>
 

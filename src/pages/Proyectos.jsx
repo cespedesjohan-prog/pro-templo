@@ -702,7 +702,7 @@ async function guardarPrestamo(e) {
           </h1>
 
           <p className="mt-2 text-gray-500">
-            Administración de proyectos del Pro Templo
+            Administración de proyectos del ICC Palabra de Fe
           </p>
 
         </div>

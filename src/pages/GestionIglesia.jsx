@@ -291,7 +291,7 @@ function GestionIglesia() {
               <div>
 
                 <p className="text-sm font-medium text-blue-600">
-                  PRO TEMPLO
+                  ICC PALABRA DE FE
                 </p>
 
                 <h2 className="mt-1 text-2xl font-bold text-slate-900">
@@ -329,7 +329,7 @@ function GestionIglesia() {
 
             <div className="mt-6 space-y-3">
 
-              {/* PRO TEMPLO */}
+              {/* ICC PALABRA DE FE */}
 
               <button
                 type="button"
@@ -368,7 +368,7 @@ function GestionIglesia() {
                 <div>
 
                   <p className="font-bold text-slate-800">
-                    PRO TEMPLO
+                    ICC PALABRA DE FE
                   </p>
 
                   <p className="text-sm text-slate-500">

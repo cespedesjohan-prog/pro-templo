@@ -508,7 +508,7 @@ function Miembros() {
           </h1>
 
           <p className="mt-2 text-gray-500">
-            Administración de miembros del Pro Templo
+            Administración de miembros del ICC Palabra de Fe
           </p>
 
         </div>
